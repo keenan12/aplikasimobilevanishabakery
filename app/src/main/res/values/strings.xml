@@ -1,0 +1,196 @@
+<resources>
+    <string name="app_name">Vanisha Bakery</string>
+    <string name="app_version">Versi 1.0.0</string>
+
+    <!-- Auth -->
+    <string name="login">Masuk</string>
+    <string name="logout">Keluar</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="email_hint">Masukkan email Anda</string>
+    <string name="password_hint">Masukkan password Anda</string>
+    <string name="login_title">Selamat Datang</string>
+    <string name="login_subtitle">Masuk ke akun Vanisha Bakery Anda</string>
+    <string name="error_email_empty">Email tidak boleh kosong</string>
+    <string name="error_password_empty">Password tidak boleh kosong</string>
+    <string name="error_invalid_email">Format email tidak valid</string>
+    <string name="error_login_failed">Login gagal. Periksa email dan password Anda</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_mitra">Mitra</string>
+    <string name="nav_add">Tambah</string>
+    <string name="nav_aktivitas">Riwayat</string>
+    <string name="nav_profile">Profil</string>
+
+    <!-- Action Bottom Sheet -->
+    <string name="action_add_mitra">Tambah Mitra</string>
+    <string name="action_input_pengiriman">Input Pengiriman</string>
+    <string name="action_input_penjualan">Input Penjualan</string>
+    <string name="action_kelola_rute">Kelola Rute</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Halo,</string>
+    <string name="home_subtitle">Selamat bekerja hari ini!</string>
+    <string name="total_mitra">Total Mitra</string>
+    <string name="pengiriman_hari_ini">Pengiriman Hari Ini</string>
+    <string name="penjualan_hari_ini">Penjualan Hari Ini</string>
+    <string name="mitra_pending">Mitra Pending</string>
+    <string name="aktivitas_terbaru">Aktivitas Terbaru</string>
+    <string name="label_dikunjungi">DIKUNJUNGI</string>
+    <string name="label_belum_dikunjungi">BELUM DIKUNJUNGI</string>
+    <string name="label_lalu_lintas_penjualan">LALU LINTAS PENJUALAN</string>
+    <string name="label_pratinjau_peta">PRATINJAU PETA</string>
+    <string name="label_lihat_peta_lengkap">LIHAT PETA LENGKAP</string>
+    <string name="label_dasbor_operasional">DASBOR OPERASIONAL</string>
+    <string name="label_mulai_pelacakan">MULAI PELACAKAN</string>
+    <string name="label_kamera">KAMERA</string>
+
+    <!-- Mitra -->
+    <string name="mitra">Mitra</string>
+    <string name="tambah_mitra">Tambah Mitra</string>
+    <string name="nama_toko">Nama Toko</string>
+    <string name="nama_toko_hint">Masukkan nama toko</string>
+    <string name="foto_toko">Foto Toko</string>
+    <string name="ambil_foto">Ambil Foto</string>
+    <string name="lokasi_gps">Lokasi GPS</string>
+    <string name="mengambil_lokasi">Mengambil lokasi…</string>
+    <string name="lokasi_berhasil">Lokasi berhasil didapat</string>
+    <string name="simpan">Simpan</string>
+    <string name="batal">Batal</string>
+    <string name="detail_mitra">Detail Mitra</string>
+    <string name="lihat_di_maps">Lihat di Peta</string>
+    <string name="status_pending">Menunggu</string>
+    <string name="status_approved">Disetujui</string>
+    <string name="status_rejected">Ditolak</string>
+    <string name="approve_mitra">Setujui Mitra</string>
+    <string name="reject_mitra">Tolak Mitra</string>
+    <string name="approve_confirm">Apakah Anda yakin ingin menyetujui mitra ini?</string>
+    <string name="reject_confirm">Apakah Anda yakin ingin menolak mitra ini?</string>
+    <string name="mitra_berhasil_disimpan">Mitra berhasil disimpan</string>
+    <string name="search_mitra">Cari mitra…</string>
+    <string name="filter_all">Semua</string>
+    <string name="filter_pending">Menunggu</string>
+    <string name="filter_approved">Disetujui</string>
+    <string name="label_katalog_mitra">KATALOG MITRA</string>
+    <string name="label_daftar_mitra">Daftar Mitra</string>
+    <string name="label_cari_produk">CARI PRODUK…</string>
+    <string name="label_kunjungan_belum_ada">BELUM ADA KUNJUNGAN</string>
+    <string name="label_rute_pengiriman">RUTE PENGIRIMAN</string>
+    <string name="label_staf_sales">STAF</string>
+    <string name="label_no_photo">BELUM ADA FOTO</string>
+    <string name="label_lokasi_belum_diatur">LOKASI BELUM DIATUR</string>
+    <string name="hint_pilih_rute">PILIH RUTE PENGIRIMAN</string>
+    <string name="hint_nama_toko">NAMA TOKO / MITRA</string>
+
+    <!-- Pengiriman -->
+    <string name="input_pengiriman">Catat Pengiriman</string>
+    <string name="pilih_mitra">Pilih Mitra</string>
+    <string name="nama_produk">Nama Produk</string>
+    <string name="nama_produk_hint">Masukkan nama produk</string>
+    <string name="jumlah">Jumlah</string>
+    <string name="jumlah_hint">Masukkan jumlah</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="pengiriman_berhasil">Pengiriman berhasil dicatat</string>
+    <string name="label_log_pengiriman">LOG PENGIRIMAN</string>
+    <string name="label_log_pengiriman_sub">Catat pengiriman roti ke mitra usaha</string>
+    <string name="label_pilih_mitra">PILIH MITRA</string>
+    <string name="label_pilih_produk">PILIH PRODUK</string>
+    <string name="label_daftar_kirim">DAFTAR KIRIM</string>
+    <string name="label_tanggal_kirim">TANGGAL PENGIRIMAN</string>
+    <string name="btn_tambah_ke_daftar">TAMBAH KE DAFTAR</string>
+    <string name="btn_kirim_log">SIMPAN LOG</string>
+    <string name="btn_batal">BATAL</string>
+
+    <!-- Penjualan -->
+    <string name="input_penjualan">Catat Penjualan</string>
+    <string name="jumlah_terjual">Jumlah Terjual</string>
+    <string name="jumlah_terjual_hint">Masukkan jumlah terjual</string>
+    <string name="jumlah_sisa">Jumlah Sisa</string>
+    <string name="jumlah_sisa_hint">Masukkan jumlah sisa</string>
+    <string name="total_dikirim">Total Dikirim</string>
+    <string name="penjualan_berhasil">Penjualan berhasil dicatat</string>
+    <string name="label_log_penjualan">LOG PENJUALAN</string>
+    <string name="label_log_penjualan_sub">Catat hasil penjualan dari mitra usaha</string>
+    <string name="label_harga_satuan">HARGA SATUAN</string>
+    <string name="label_jumlah_dikirim">JUMLAH DIKIRIM</string>
+    <string name="label_jumlah_terjual">JUMLAH TERJUAL</string>
+    <string name="btn_simpan_penjualan">SIMPAN PENJUALAN</string>
+
+    <!-- Produk -->
+    <string name="label_katalog_produk">KATALOG PRODUK</string>
+    <string name="label_produk_vanisha">Produk Vanisha</string>
+    <string name="label_total_stok">TOTAL STOK</string>
+    <string name="label_stok_menipis">STOK MENIPIS</string>
+    <string name="label_cari_produk_hint">CARI PRODUK…</string>
+    <string name="btn_tambah_produk">TAMBAH PRODUK</string>
+
+    <!-- Produk Form -->
+    <string name="label_tambah_produk">TAMBAH PRODUK</string>
+    <string name="label_nama_produk">NAMA PRODUK</string>
+    <string name="label_harga_produk">HARGA (Rp)</string>
+    <string name="label_stok_awal">STOK AWAL</string>
+    <string name="label_kategori">KATEGORI</string>
+
+    <!-- Rute -->
+    <string name="label_kelola_rute">KELOLA RUTE</string>
+    <string name="label_nama_rute">NAMA RUTE</string>
+    <string name="label_kode_rute">KODE RUTE</string>
+    <string name="label_pilih_staf">PILIH STAF SALES</string>
+    <string name="btn_tambah_rute">TAMBAH RUTE BARU</string>
+    <string name="btn_edit">UBAH</string>
+    <string name="btn_hapus">HAPUS</string>
+    <string name="konfirmasi_hapus_rute">Yakin ingin menghapus rute ini?</string>
+
+    <!-- Aktivitas -->
+    <string name="label_log_operasional">LOG OPERASIONAL</string>
+    <string name="label_riwayat_aktivitas">Riwayat Aktivitas</string>
+    <string name="label_total_aktivitas">TOTAL AKTIVITAS</string>
+    <string name="label_hapus_log">HAPUS LOG</string>
+    <string name="label_tidak_ada_aktivitas">BELUM ADA AKTIVITAS</string>
+
+    <!-- Profile -->
+    <string name="profil">Profil</string>
+    <string name="nama">Nama</string>
+    <string name="role">Jabatan</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_staff">Staf Sales</string>
+    <string name="ganti_foto">Ganti Foto Profil</string>
+    <string name="kelola_user">Kelola Pengguna</string>
+    <string name="konfirmasi_logout">Apakah Anda yakin ingin keluar?</string>
+    <string name="ya">Ya</string>
+    <string name="tidak">Tidak</string>
+    <string name="label_profil_saya">PROFIL SAYA</string>
+    <string name="label_manajemen_akun">Manajemen Akun</string>
+    <string name="label_tambah_pengguna">TAMBAH PENGGUNA</string>
+    <string name="label_akun_pengguna">AKUN PENGGUNA</string>
+    <string name="label_email_pengguna">EMAIL</string>
+    <string name="label_nama_pengguna">NAMA LENGKAP</string>
+    <string name="label_password_pengguna">PASSWORD</string>
+    <string name="label_jabatan_pengguna">JABATAN</string>
+    <string name="label_admin">ADMIN</string>
+    <string name="label_staf">STAF SALES</string>
+    <string name="label_terakhir_online">TERAKHIR ONLINE</string>
+    <string name="label_keluar">KELUAR</string>
+    <string name="label_sampul">FOTO SAMPUL</string>
+
+    <!-- Map -->
+    <string name="label_peta_mitra">PETA MITRA</string>
+    <string name="label_lacak_lokasi">LACAK LOKASI</string>
+    <string name="label_rute_aktif">RUTE AKTIF</string>
+
+    <!-- Common -->
+    <string name="loading">Memuat…</string>
+    <string name="error_generic">Terjadi kesalahan. Silakan coba lagi</string>
+    <string name="no_data">Tidak ada data</string>
+    <string name="offline_mode">Mode Offline — Data akan disinkronisasi saat online</string>
+    <string name="ok">OK</string>
+    <string name="hapus">Hapus</string>
+    <string name="edit">Ubah</string>
+    <string name="konfirmasi">Konfirmasi</string>
+    <string name="permission_camera">Izin kamera diperlukan untuk mengambil foto toko</string>
+    <string name="permission_location">Izin lokasi diperlukan untuk mendapatkan koordinat toko</string>
+    <string name="permission_denied">Izin ditolak. Aktifkan di pengaturan aplikasi</string>
+    <string name="label_lihat_semua">LIHAT SEMUA</string>
+    <string name="label_belum_ada_data">Belum ada data tersedia</string>
+</resources>

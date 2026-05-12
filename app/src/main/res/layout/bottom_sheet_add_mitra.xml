@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="12dp"
+    android:paddingBottom="40dp"
+    android:paddingHorizontal="24dp"
+    android:background="@drawable/bg_bottom_sheet_modern">
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tambah_mitra"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lengkapi form untuk menambahkan mitra baru"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNamaToko"
+        style="@style/Widget.Vanisha.TextInputLayout.Neo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_nama_toko"
+        app:startIconDrawable="@drawable/ic_store"
+        app:startIconTint="@color/black"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNamaToko"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:background="@drawable/bg_neo_input" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRute"
+        style="@style/Widget.Vanisha.TextInputLayout.Neo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_pilih_rute"
+        android:layout_marginBottom="24dp">
+        <AutoCompleteTextView
+            android:id="@+id/acRute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:background="@drawable/bg_neo_input" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAmbilFoto"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="KAMERA"
+            android:background="@drawable/bg_neo_button_teal"
+            app:icon="@drawable/ic_activity"
+            app:iconTint="@color/black"
+            android:layout_marginEnd="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAmbilLokasi"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="LOKASI"
+            android:background="@drawable/bg_neo_button_green"
+            app:icon="@drawable/ic_delivery"
+            app:iconTint="@color/black"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAmbilFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_no_photo"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tvLokasiStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_lokasi_belum_diatur"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFotoPreview"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        style="@style/Widget.Vanisha.Card.Neo">
+        <ImageView
+            android:id="@+id/ivFotoPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/black"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBatal"
+            style="@style/Widget.Vanisha.Button.Text"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="@string/btn_batal"
+            android:layout_marginEnd="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSimpan"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="@string/simpan"
+            android:background="@drawable/bg_neo_button_yellow"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/neo_bg">
+
+    <!-- Header / Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neo_bg"
+        app:elevation="0dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="PENGELOLAAN MITRA"
+            app:titleTextColor="@color/black"
+            app:navigationIcon="@drawable/ic_back" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Search Bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="12dp"
+        app:strokeWidth="3dp"
+        app:strokeColor="@color/black"
+        app:cardBackgroundColor="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/black" />
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:background="@android:color/transparent"
+                android:hint="CARI TOKO / ALAMAT..."
+                android:textColor="@color/black"
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-black"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:inputType="text" />
+            <ImageButton
+                android:id="@+id/btnReset"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_close"
+                app:tint="@color/neo_red" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Filter Section Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FILTER BERDASARKAN"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:letterSpacing="0.2"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/neo_yellow"
+        android:paddingHorizontal="8dp" />
+
+    <!-- Filter Dropdowns -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="12dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="3dp"
+            app:strokeColor="@color/black"
+            app:cardBackgroundColor="@color/white">
+            <Spinner
+                android:id="@+id/spinnerSales"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingHorizontal="12dp" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_chevron_right"
+                android:rotation="90"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
+                app:tint="@color/black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="12dp"
+            app:strokeWidth="3dp"
+            app:strokeColor="@color/black"
+            app:cardBackgroundColor="@color/white">
+            <Spinner
+                android:id="@+id/spinnerRute"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingHorizontal="12dp" />
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_chevron_right"
+                android:rotation="90"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
+                app:tint="@color/black" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Results Count -->
+    <TextView
+        android:id="@+id/tvResultCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MENAMPILKAN 0 MITRA"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- List Results -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvManageMitra"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="24dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_mitra" />
+
+</LinearLayout>

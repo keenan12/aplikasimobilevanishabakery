@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.VanishaBakery" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/neo_yellow</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/neo_teal</item>
+        
+        <item name="android:colorBackground">@color/bg_dark</item>
+        <item name="colorSurface">@color/card_dark</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurfaceVariant">#1A1A1A</item>
+        <item name="colorOutline">@color/white</item>
+
+        <item name="android:fontFamily">sans-serif-black</item>
+        
+        <item name="materialButtonStyle">@style/Widget.Vanisha.Button.Neo</item>
+        <item name="textInputStyle">@style/Widget.Vanisha.TextInputLayout.Neo</item>
+    </style>
+</resources>

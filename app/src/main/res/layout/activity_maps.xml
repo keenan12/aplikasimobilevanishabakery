@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Premium Overlay: Gradient Top (Semi-transparent background color) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/bg_gradient_overlay_reverse"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnBack"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_margin="20dp"
+        style="@style/Widget.Vanisha.Card.Neo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back"
+            app:tint="@color/black" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Search & Filter Container -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFilter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="20dp"
+        style="@style/Widget.Vanisha.Card.Neo"
+        app:layout_constraintBottom_toBottomOf="@id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnBack"
+        app:layout_constraintTop_toTopOf="@id/btnBack">
+        
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupRute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true" />
+        </HorizontalScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Map Action FABs -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/cardBottomInfo"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabCamera"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_camera"
+            app:iconTint="@color/black"
+            app:iconSize="24dp"
+            android:background="@drawable/bg_neo_button_teal"
+            app:backgroundTint="@null"
+            android:visibility="gone"
+            android:padding="0dp"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabMapType"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_map"
+            app:iconTint="@color/black"
+            app:iconSize="24dp"
+            android:background="@drawable/bg_neo_button_yellow"
+            app:backgroundTint="@null"
+            android:padding="0dp"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabMyLocation"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:icon="@drawable/ic_my_location"
+            app:iconTint="@color/black"
+            app:iconSize="24dp"
+            android:background="@drawable/bg_neo_button_green"
+            app:backgroundTint="@null"
+            android:padding="0dp"
+            app:iconGravity="textStart" />
+    </LinearLayout>
+
+    <!-- Admin Filter Sales FAB -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fabFilterSales"
+        style="@style/Widget.Vanisha.Button.Neo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="20dp"
+        app:icon="@drawable/ic_person"
+        app:iconTint="@color/black"
+        app:iconSize="24dp"
+        android:background="@drawable/bg_neo_button_magenta"
+        app:backgroundTint="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/cardBottomInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="0dp"
+        app:iconGravity="textStart" />
+
+    <!-- Bottom Info Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBottomInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        style="@style/Widget.Vanisha.Card.Neo"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tvMitraName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SELECT MITRA PIN"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMitraStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tap pin for details"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginVertical="20dp"
+                android:background="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DISTANCE"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0 Km"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavigasi"
+                    style="@style/Widget.Vanisha.Button.Neo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:text="NAVIGATE"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_location"
+                    app:iconTint="@color/black"
+                    android:background="@drawable/bg_neo_button_teal"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

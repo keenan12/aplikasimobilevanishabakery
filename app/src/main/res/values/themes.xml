@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- BASE THEME -->
+    <style name="Base.Theme.VanishaBakery" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOutline">@color/outline</item>
+
+        <!-- Typography - NOTE: do NOT set android:fontFamily here globally.
+             It breaks Toast.makeText() on API < 28 (StringBlock ArrayIndexOutOfBounds).
+             Apply fontFamily per-view instead. -->
+        
+        <!-- Component Styles -->
+        <item name="materialButtonStyle">@style/Widget.Vanisha.Button.Neo</item>
+        <item name="textInputStyle">@style/Widget.Vanisha.TextInputLayout.Neo</item>
+    </style>
+
+    <style name="Theme.VanishaBakery" parent="Base.Theme.VanishaBakery" />
+
+    <!-- Neo Brutalism Component Styles -->
+    <style name="Widget.Vanisha.Button.Neo" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:background">@drawable/bg_neo_button</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Widget.Vanisha.TextInputLayout.Neo" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundColor">@color/transparent</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="hintTextColor">@color/black</item>
+    </style>
+
+    <style name="Widget.Vanisha.Card.Neo" parent="Widget.Material3.CardView.Elevated">
+        <item name="android:background">@drawable/bg_neo_card</item>
+        <item name="cardBackgroundColor">@color/transparent</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Aliases for compatibility -->
+    <style name="Widget.Vanisha.Card" parent="Widget.Vanisha.Card.Neo" />
+    <style name="Widget.Vanisha.Card.Premium" parent="Widget.Vanisha.Card.Neo" />
+    <style name="Widget.Vanisha.Button" parent="Widget.Vanisha.Button.Neo" />
+    <style name="Widget.Vanisha.Button.Premium" parent="Widget.Vanisha.Button.Neo" />
+    <style name="Widget.Vanisha.TextInputLayout" parent="Widget.Vanisha.TextInputLayout.Neo" />
+    <style name="Widget.Vanisha.TextInputLayout.Premium" parent="Widget.Vanisha.TextInputLayout.Neo" />
+    
+    <style name="Widget.Vanisha.Button.Outline" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_input</item>
+    </style>
+
+    <style name="Widget.Vanisha.Button.Neo.Magenta" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_button_magenta</item>
+    </style>
+    <style name="Widget.Vanisha.Button.Neo.Teal" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_button_teal</item>
+    </style>
+    <style name="Widget.Vanisha.Button.Neo.Green" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_button_green</item>
+    </style>
+    <style name="Widget.Vanisha.Button.Neo.Red" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_button_red</item>
+    </style>
+    <style name="Widget.Vanisha.Button.Neo.Yellow" parent="Widget.Vanisha.Button.Neo">
+        <item name="android:background">@drawable/bg_neo_button_yellow</item>
+    </style>
+    <style name="Widget.VanishaBakery.Button.Outline" parent="Widget.Vanisha.Button.Outline" />
+    <style name="Widget.VanishaBakery.TextInputLayout" parent="Widget.Vanisha.TextInputLayout.Neo" />
+    <style name="Widget.VanishaBakery.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/background</item>
+        <item name="titleTextColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="ShapeAppearance.Vanisha.Square" parent="">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.Vanisha.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Widget.Vanisha.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Theme.VanishaBakery.Dialog.Neo" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+
+    <style name="Widget.Vanisha.NumberPicker" parent="android:Widget">
+        <item name="android:selectionDividerHeight">2dp</item>
+    </style>
+</resources>

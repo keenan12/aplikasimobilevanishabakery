@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="12dp"
+    android:paddingBottom="40dp"
+    android:paddingHorizontal="24dp"
+    android:background="@drawable/bg_bottom_sheet_modern">
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_log_penjualan"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_log_penjualan_sub"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Pilih Mitra -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMitra"
+        style="@style/Widget.Vanisha.TextInputLayout.Neo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/label_pilih_mitra"
+        app:startIconDrawable="@drawable/ic_store"
+        app:startIconTint="@color/black"
+        android:layout_marginBottom="24dp">
+        <AutoCompleteTextView
+            android:id="@+id/acMitra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:background="@drawable/bg_neo_input" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Product Input Container -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        style="@style/Widget.Vanisha.Card.Neo"
+        app:cardBackgroundColor="@color/neo_bg">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNamaProduk"
+                style="@style/Widget.Vanisha.TextInputLayout.Neo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/label_pilih_produk"
+                android:layout_marginBottom="12dp">
+                <AutoCompleteTextView
+                    android:id="@+id/acNamaProduk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:padding="16dp"
+                    android:background="@drawable/bg_neo_input" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilHargaSatuan"
+                    style="@style/Widget.Vanisha.TextInputLayout.Neo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:hint="@string/label_harga_satuan"
+                    android:layout_marginEnd="8dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etHargaSatuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:background="@drawable/bg_neo_input" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilJumlahDikirim"
+                    style="@style/Widget.Vanisha.TextInputLayout.Neo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/label_jumlah_dikirim"
+                    android:layout_marginEnd="8dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etJumlahDikirim"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:background="@drawable/bg_neo_input" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilJumlahTerjual"
+                    style="@style/Widget.Vanisha.TextInputLayout.Neo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/label_jumlah_terjual">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etJumlahTerjual"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:background="@drawable/bg_neo_input" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddToList"
+                style="@style/Widget.Vanisha.Button.Neo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/btn_tambah_ke_daftar"
+                android:background="@drawable/bg_neo_button_teal"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@color/black" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_daftar_kirim"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:background="@color/neo_magenta"
+        android:paddingHorizontal="8dp"
+        android:layout_marginBottom="12dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAddedProducts"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="24dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_added_product" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/black"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBatal"
+            style="@style/Widget.Vanisha.Button.Text"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="@string/btn_batal"
+            android:layout_marginEnd="8dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSimpan"
+            style="@style/Widget.Vanisha.Button.Neo"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:text="@string/btn_simpan_penjualan"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@drawable/bg_neo_button_green" />
+    </LinearLayout>
+
+</LinearLayout>

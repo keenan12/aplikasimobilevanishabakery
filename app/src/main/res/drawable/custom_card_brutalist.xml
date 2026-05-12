@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- HARD SHADOW LAYER -->
+    <item
+        android:top="4dp"
+        android:left="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <!-- MAIN CARD LAYER -->
+    <item
+        android:bottom="4dp"
+        android:right="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" /> <!-- Background color should be set dynamically or via style -->
+            <stroke
+                android:width="2dp"
+                android:color="@color/black" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</layer-list>

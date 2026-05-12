@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_neo_input">
+
+    <TextView
+        android:id="@+id/tvNamaProduk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PRODUCT NAME"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Vanisha.TextInputLayout.Neo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="PRICE"
+            android:layout_marginEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHargaSatuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:background="@drawable/bg_neo_input" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Vanisha.TextInputLayout.Neo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="SENT"
+            android:layout_marginEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDikirim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:background="@drawable/bg_neo_input" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Vanisha.TextInputLayout.Neo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="SOLD">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTerjual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:background="@drawable/bg_neo_input" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSisa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LEFT: 0"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="end"
+        android:background="@color/neo_teal"
+        android:paddingHorizontal="10dp" />
+
+</LinearLayout>

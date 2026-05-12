@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_neo_input">
+
+    <TextView
+        android:id="@+id/tvNamaProduk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PRODUCT NAME"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="12dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Vanisha.TextInputLayout.Neo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="DELIVERY QUANTITY"
+        app:hintTextColor="@color/black"
+        app:hintEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etJumlah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:background="@drawable/bg_neo_input" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

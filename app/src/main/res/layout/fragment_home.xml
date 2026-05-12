@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="180dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardProfileHeader"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivProfilePhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person" />
+
+                <ProgressBar
+                    android:id="@+id/pbProfilePhoto"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ivEditProfile"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                app:cardCornerRadius="13dp"
+                app:cardBackgroundColor="@color/neo_teal"
+                app:cardElevation="0dp"
+                app:strokeWidth="2.5dp"
+                app:strokeColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/cardProfileHeader"
+                app:layout_constraintEnd_toEndOf="@id/cardProfileHeader"
+                android:layout_margin="2dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_edit"
+                    app:tint="@color/black" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnNotifikasi"
+                app:layout_constraintStart_toEndOf="@id/cardProfileHeader"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WELCOME BACK,"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1" />
+
+                <TextView
+                    android:id="@+id/tvGreeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Admin Bakery"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-black"
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnNotifikasi"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:cardCornerRadius="28dp"
+                app:cardBackgroundColor="@color/neo_yellow"
+                app:cardElevation="0dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="14dp"
+                        android:src="@drawable/ic_notifications"
+                        app:tint="@color/black" />
+                    
+                    <TextView
+                        android:id="@+id/tvNotifBadge"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_neo_input"
+                        android:backgroundTint="@color/neo_red"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- SALES CHART CARD -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTrafficFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/headerContainer"
+            style="@style/Widget.Vanisha.Card.Neo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SALES TRAFFIC"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvTotalOmset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rp 0"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-black"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:orientation="horizontal">
+                        
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/btnFilterPeriode"
+                            android:layout_width="160dp"
+                            android:layout_height="48dp"
+                            app:cardBackgroundColor="@color/neo_teal"
+                            app:cardCornerRadius="8dp"
+                            app:strokeWidth="3dp"
+                            app:strokeColor="@color/black"
+                            app:cardElevation="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:paddingHorizontal="12dp">
+
+                                <TextView
+                                    android:id="@+id/tvSelectedPeriode"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Januari 2024"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:fontFamily="sans-serif-black"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_calendar"
+                                    app:tint="@color/black" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone">
+                            <AutoCompleteTextView android:id="@+id/spinnerBulan" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone">
+                            <AutoCompleteTextView android:id="@+id/spinnerTahun" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartSales"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TOP PRODUCTS CARD -->
+        <TextView
+            android:id="@+id/tvLabelTopProduk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
+            android:text="TOP PRODUK TERLARIS"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardTrafficFrame" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPieChart"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="3dp"
+            app:strokeColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelTopProduk">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChartTopProduk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- STATS ROW -->
+        <LinearLayout
+            android:id="@+id/layoutStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cardPieChart">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_neo_card_teal">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvTotalCheckin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="32sp"
+                        android:fontFamily="sans-serif-black"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DIKUNJUNGI"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_neo_card_magenta">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvTotalUnvisited"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="32sp"
+                        android:fontFamily="sans-serif-black"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MENUNGGU"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- MAPS PREVIEW CARD -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMapsPreview"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/layoutStats">
+            
+            <!-- Neo-Brutalist Shadow Effect using a simple background shadow trick -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOpenMaps"
+                    style="@style/Widget.Vanisha.Button.Neo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:text="PETA PELACAKAN"
+                    android:textColor="@color/black"
+                    app:icon="@drawable/ic_map"
+                    app:iconTint="@color/black"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

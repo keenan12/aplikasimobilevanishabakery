@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="12dp"
+    app:strokeWidth="3dp"
+    app:strokeColor="@color/black"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/black"
+            app:cardBackgroundColor="@color/neo_yellow">
+            <TextView
+                android:id="@+id/tvKodeRute"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="A1"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tvNamaRute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CILANDAK BARAT"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-black"
+                android:textAllCaps="true" />
+
+            <TextView
+                android:id="@+id/tvTotalMitra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12 MITRA TERDAFTAR"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/black" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

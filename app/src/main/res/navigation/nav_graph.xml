@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/mitraFragment"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.mitra.MitraFragment"
+        android:label="Mitra"
+        tools:layout="@layout/fragment_mitra" />
+
+    <fragment
+        android:id="@+id/aktivitasFragment"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.aktivitas.AktivitasFragment"
+        android:label="Aktivitas"
+        tools:layout="@layout/fragment_aktivitas" />
+
+    <fragment
+        android:id="@+id/produkFragment"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.produk.ProdukFragment"
+        android:label="Produk"
+        tools:layout="@layout/fragment_produk" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.profile.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profile" />
+
+    <activity
+        android:id="@+id/mapsActivity"
+        android:name="id.mohamadsuhendy.vanishabakery.ui.maps.MapsActivity"
+        android:label="Peta Pelacakan"
+        tools:layout="@layout/activity_maps" />
+
+</navigation>

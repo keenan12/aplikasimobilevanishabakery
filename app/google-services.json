@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "285158151213",
+    "project_id": "vanisha-bakery-f7a8a",
+    "storage_bucket": "vanisha-bakery-f7a8a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285158151213:android:2e4359d0f18c6aa2bad4a4",
+        "android_client_info": {
+          "package_name": "id.mohamadsuhendy.vanishabakery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2AneE5VE20hGVB94Xr08vf098KurE5Wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
