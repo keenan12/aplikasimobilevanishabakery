@@ -457,6 +457,10 @@ class FirebaseDataSource {
         db.collection(Constants.COLLECTION_NOTIFIKASI).add(notif).await()
     }
 
+    fun markNotifAsRead(notifId: String) {
+        db.collection(Constants.COLLECTION_NOTIFIKASI).document(notifId).update("isRead", true)
+    }
+
     suspend fun markAllNotifAsRead(userId: String, isAdmin: Boolean) {
         try {
             val query = if (isAdmin) {

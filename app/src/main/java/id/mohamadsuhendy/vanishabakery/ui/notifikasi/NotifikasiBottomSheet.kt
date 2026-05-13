@@ -27,6 +27,7 @@ import java.util.Date
 import java.util.Locale
 
 data class NotifItem(
+    val notifId: String = "",
     val judul: String,
     val pesan: String,
     val waktu: Date?,
@@ -53,6 +54,9 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
 
         val app = requireActivity().application as VanishaBakeryApp
         val adapter = NotifAdapter { item ->
+            if (item.notifId.isNotEmpty()) {
+                app.firebaseDataSource.markNotifAsRead(item.notifId)
+            }
             if (item.referensiId.isNotEmpty()) {
                 val intent = Intent(requireContext(), MitraDetailActivity::class.java).apply {
                     putExtra(Constants.KEY_MITRA_ID, item.referensiId)
@@ -85,6 +89,7 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                     // Convert pending mitras to notification items
                     val mitraNotifs = pendingMitras.map { mitra ->
                         NotifItem(
+                            notifId = "", // pending mitras are not actual notif documents
                             judul = "📋 Pengajuan Mitra Baru",
                             pesan = "${mitra.staffNama} mengajukan: ${mitra.namaToko} (${mitra.ruteNama})",
                             waktu = mitra.createdAt?.toDate(),
@@ -97,6 +102,7 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                     val regularNotifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
                         notifResult.data.map { notif ->
                             NotifItem(
+                                notifId = notif.id,
                                 judul = notif.judul,
                                 pesan = notif.pesan,
                                 waktu = notif.createdAt?.toDate(),
@@ -137,6 +143,7 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                             val emoji = if (mitra.status == "approved") "✅" else "❌"
                             val statusText = if (mitra.status == "approved") "Disetujui" else "Ditolak"
                             NotifItem(
+                                notifId = "",
                                 judul = "$emoji Mitra $statusText",
                                 pesan = "Pengajuan mitra ${mitra.namaToko} telah $statusText oleh Admin",
                                 waktu = mitra.updatedAt?.toDate() ?: mitra.createdAt?.toDate(),
@@ -149,6 +156,7 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                     val targetedNotifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
                         notifResult.data.map { notif ->
                             NotifItem(
+                                notifId = notif.id,
                                 judul = notif.judul,
                                 pesan = notif.pesan,
                                 waktu = notif.createdAt?.toDate(),
