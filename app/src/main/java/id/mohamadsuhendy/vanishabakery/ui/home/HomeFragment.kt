@@ -20,6 +20,7 @@ import id.mohamadsuhendy.vanishabakery.VanishaBakeryApp
 import id.mohamadsuhendy.vanishabakery.databinding.FragmentHomeBinding
 import id.mohamadsuhendy.vanishabakery.utils.*
 import id.mohamadsuhendy.vanishabakery.ui.notifikasi.NotifikasiBottomSheet
+import id.mohamadsuhendy.vanishabakery.ui.admin.ManageStokRuteActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
@@ -252,7 +253,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.btnManageStokRute.setOnClickListener {
-            val intent = android.content.Intent(requireContext(), id.mohamadsuhendy.vanishabakery.ui.admin.ManageStokRuteActivity::class.java)
+            val intent = android.content.Intent(requireContext(), ManageStokRuteActivity::class.java)
             startActivity(intent)
         }
     }
