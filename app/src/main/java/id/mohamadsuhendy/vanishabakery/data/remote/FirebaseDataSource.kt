@@ -333,7 +333,7 @@ class FirebaseDataSource {
     }
 
     suspend fun addLogAktivitas(log: LogAktivitas) {
-        db.collection(Constants.COLLECTION_LOG_AKTIVITAS).add(log).await()
+        db.collection(Constants.COLLECTION_LOG_AKTIVITAS).add(log)
     }
 
     suspend fun deleteLogAktivitas(logId: String) {
@@ -499,7 +499,8 @@ class FirebaseDataSource {
     }
 
     suspend fun addStokRute(stokRute: StokRute): String {
-        val docRef = db.collection(Constants.COLLECTION_STOK_RUTE).add(stokRute).await()
+        val docRef = db.collection(Constants.COLLECTION_STOK_RUTE).document()
+        docRef.set(stokRute)
         return docRef.id
     }
 

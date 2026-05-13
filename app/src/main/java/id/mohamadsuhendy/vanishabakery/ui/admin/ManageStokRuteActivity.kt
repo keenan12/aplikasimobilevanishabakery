@@ -88,7 +88,7 @@ class ManageStokRuteActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.ruteList.observe(this) { ruteList ->
             allRute = ruteList
-            val adapterRute = ArrayAdapter(this, android.R.layout.simple_list_item_1, ruteList.map { it.namaRute })
+            val adapterRute = ArrayAdapter(this, android.R.layout.simple_list_item_1, ruteList.map { "${it.namaRute} (${it.staffNama})" })
             binding.acRute.setAdapter(adapterRute)
         }
 
