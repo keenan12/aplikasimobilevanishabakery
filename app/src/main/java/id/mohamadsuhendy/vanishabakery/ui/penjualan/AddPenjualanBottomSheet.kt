@@ -150,16 +150,9 @@ class AddPenjualanBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun savePenjualan() {
-        val mitra = selectedMitra ?: run { requireContext().showToast("Pilih mitra terlebih dahulu"); return }
-        
-        if (addedProducts.isEmpty()) {
-            requireContext().showToast("Daftar produk masih kosong")
-            return
-        }
-        
-        addedProducts.forEach { item ->
-            viewModel.addPenjualan("", mitra.id, mitra.namaToko, item.namaProduk, item.dikirim, item.terjual, item.harga)
-        }
+        // This bottom sheet is no longer used — input is done via RapidEntryActivity
+        requireContext().showToast("Gunakan menu Input Nota Mingguan untuk input penjualan")
+        dismiss()
     }
 
     private fun observeViewModel() {

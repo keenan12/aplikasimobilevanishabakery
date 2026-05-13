@@ -8,19 +8,13 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import id.mohamadsuhendy.vanishabakery.databinding.FragmentActionBottomSheetBinding
 import id.mohamadsuhendy.vanishabakery.ui.mitra.AddMitraBottomSheet
-import id.mohamadsuhendy.vanishabakery.ui.pengiriman.AddPengirimanBottomSheet
-import id.mohamadsuhendy.vanishabakery.ui.penjualan.AddPenjualanBottomSheet
 import androidx.lifecycle.lifecycleScope
-import id.mohamadsuhendy.vanishabakery.utils.showToast
 import id.mohamadsuhendy.vanishabakery.ui.profile.ManageRuteBottomSheet
-import androidx.fragment.app.activityViewModels
 import kotlinx.coroutines.launch
 import id.mohamadsuhendy.vanishabakery.VanishaBakeryApp
-import id.mohamadsuhendy.vanishabakery.ui.mitra.MitraViewModel
-import id.mohamadsuhendy.vanishabakery.ui.mitra.KelolaMitraBottomSheet
-import id.mohamadsuhendy.vanishabakery.ui.mitra.RuteSalesActivity
-
 import id.mohamadsuhendy.vanishabakery.ui.mitra.ManageMitraActivity
+import id.mohamadsuhendy.vanishabakery.ui.penjualan.RapidEntryActivity
+import id.mohamadsuhendy.vanishabakery.ui.laporan.LaporanActivity
 
 class ActionBottomSheetFragment : BottomSheetDialogFragment() {
  
@@ -40,13 +34,19 @@ class ActionBottomSheetFragment : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             val user = app.authRepository.getCurrentUserData()
             if (user?.isAdmin() == true) {
-                binding.btnKelolaMitra.visibility = android.view.View.VISIBLE
-                binding.btnKelolaRute.visibility = android.view.View.GONE
-                binding.tvKelolaMitra.text = "PENGELOLAAN MITRA"
+                // Admin: Show Input Nota + Laporan Excel + Kelola Mitra
+                binding.btnInputPengiriman.visibility = View.VISIBLE  // "Input Nota Mingguan"
+                binding.btnLaporanExcel.visibility = View.VISIBLE
+                binding.btnInputPenjualan.visibility = View.GONE
+                binding.btnKelolaMitra.visibility = View.VISIBLE
+                binding.btnKelolaRute.visibility = View.GONE
             } else {
-                // For Sales: Show DATA RUTE to access the searchable list
-                binding.btnKelolaMitra.visibility = android.view.View.GONE
-                binding.btnKelolaRute.visibility = android.view.View.VISIBLE
+                // Sales: Only show Tambah Mitra + Data Rute
+                binding.btnInputPengiriman.visibility = View.GONE
+                binding.btnLaporanExcel.visibility = View.GONE
+                binding.btnInputPenjualan.visibility = View.GONE
+                binding.btnKelolaMitra.visibility = View.GONE
+                binding.btnKelolaRute.visibility = View.VISIBLE
                 binding.tvKelolaRute.text = "DATA RUTE"
             }
         }
@@ -59,7 +59,6 @@ class ActionBottomSheetFragment : BottomSheetDialogFragment() {
                     val fm = requireActivity().supportFragmentManager
                     ManageRuteBottomSheet().show(fm, "ManageRute")
                 } else {
-                    // Sales: Open the integrated ManageMitraActivity directly
                     val intent = Intent(context, ManageMitraActivity::class.java)
                     startActivity(intent)
                 }
@@ -85,17 +84,22 @@ class ActionBottomSheetFragment : BottomSheetDialogFragment() {
             AddMitraBottomSheet().show(fm, AddMitraBottomSheet.TAG)
         }
 
+        // "Input Nota Mingguan" → RapidEntryActivity (Admin only)
         binding.btnInputPengiriman.setOnClickListener {
-            val fm = requireActivity().supportFragmentManager
+            val context = requireContext()
             dismiss()
-            AddPengirimanBottomSheet().show(fm, AddPengirimanBottomSheet.TAG)
+            startActivity(Intent(context, RapidEntryActivity::class.java))
         }
 
-        binding.btnInputPenjualan.setOnClickListener {
-            val fm = requireActivity().supportFragmentManager
+        // "Laporan Excel" → LaporanActivity (Admin only)
+        binding.btnLaporanExcel.setOnClickListener {
+            val context = requireContext()
             dismiss()
-            AddPenjualanBottomSheet().show(fm, AddPenjualanBottomSheet.TAG)
+            startActivity(Intent(context, LaporanActivity::class.java))
         }
+
+        // Old penjualan button (hidden)
+        binding.btnInputPenjualan.setOnClickListener { }
     }
 
     override fun onDestroyView() {

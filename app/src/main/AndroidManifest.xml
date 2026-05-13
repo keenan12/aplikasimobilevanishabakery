@@ -75,6 +75,20 @@
             android:name=".ui.mitra.RuteSalesActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.penjualan.RapidEntryActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.laporan.LaporanActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.admin.ManageStokRuteActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

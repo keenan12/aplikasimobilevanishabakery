@@ -8,6 +8,10 @@ import id.mohamadsuhendy.vanishabakery.data.repository.ProdukRepository
 import id.mohamadsuhendy.vanishabakery.utils.Result
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for penjualan — now simplified since input is done via RapidEntryActivity.
+ * This ViewModel is kept for listing/viewing penjualan data on the admin side.
+ */
 class PenjualanViewModel(
     private val penjualanRepository: PenjualanRepository,
     private val authRepository: AuthRepository,
@@ -18,34 +22,6 @@ class PenjualanViewModel(
 
     private val _saveState = MutableLiveData<Result<String>>()
     val saveState: LiveData<Result<String>> = _saveState
-
-    // Auto-calculate sisa when terjual or dikirim changes
-    val jumlahSisa = MutableLiveData<Int>()
-
-    fun calculateSisa(dikirim: Int, terjual: Int) {
-        jumlahSisa.value = maxOf(0, dikirim - terjual)
-    }
-
-    fun addPenjualan(
-        pengirimanId: String, mitraId: String, mitraNama: String,
-        namaProduk: String, jumlahDikirim: Int, jumlahTerjual: Int, hargaSatuan: Int
-    ) {
-        if (mitraId.isBlank()) { _saveState.value = Result.Error("Pilih mitra terlebih dahulu"); return }
-        if (jumlahTerjual < 0) { _saveState.value = Result.Error("Jumlah terjual tidak valid"); return }
-        if (jumlahTerjual > jumlahDikirim) { _saveState.value = Result.Error("Jumlah terjual melebihi jumlah dikirim"); return }
-        val totalHarga = hargaSatuan * jumlahTerjual
-
-        viewModelScope.launch {
-            _saveState.value = Result.Loading
-            val user = authRepository.getCurrentUserData()
-                ?: run { _saveState.value = Result.Error("User tidak ditemukan"); return@launch }
-            _saveState.value = penjualanRepository.addPenjualan(
-                pengirimanId, mitraId, mitraNama, namaProduk,
-                jumlahDikirim, jumlahTerjual, hargaSatuan, totalHarga,
-                user.uid, user.nama
-            )
-        }
-    }
 
     class Factory(
         private val penjualanRepo: PenjualanRepository,

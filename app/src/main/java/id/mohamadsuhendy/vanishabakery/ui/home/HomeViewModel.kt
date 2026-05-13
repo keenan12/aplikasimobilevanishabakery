@@ -85,37 +85,17 @@ class HomeViewModel(
 
     private fun observeStats(user: User) {
         val mitraFlow = if (user.isAdmin()) mitraRepository.observeAllMitra() else mitraRepository.observeMitraByStaff(user.uid)
-        val pengirimanFlow = if (user.isAdmin()) pengirimanRepository.observeAllPengiriman() else pengirimanRepository.observePengirimanByStaff(user.uid)
-        val penjualanFlow = if (user.isAdmin()) penjualanRepository.observeAllPenjualan() else penjualanRepository.observePenjualanByStaff(user.uid)
+        // Penjualan now always from admin input — both roles see all data
+        val penjualanFlow = penjualanRepository.observeAllPenjualan()
 
         // Real-time Counts
         mitraFlow.onEach { mitras ->
             val approvedCount = mitras.filter { it.isApproved() }.size
             _totalMitra.value = approvedCount
-            
-            // Re-trigger visited calculation when mitra count changes
             updateVisitedStats(approvedCount)
         }.launchIn(viewModelScope)
 
         mitraRepository.getPendingCount().onEach { _pendingMitra.value = it }.launchIn(viewModelScope)
-        
-        // Today's Stats
-        pengirimanFlow.onEach { list ->
-            val today = java.util.Calendar.getInstance().apply {
-                set(java.util.Calendar.HOUR_OF_DAY, 0)
-                set(java.util.Calendar.MINUTE, 0)
-                set(java.util.Calendar.SECOND, 0)
-            }.time
-            
-            val visitedIds = list
-                .filter { it.tanggal?.toDate()?.after(today) == true }
-                .map { it.mitraId }
-                .distinct()
-            
-            _visitedMitraCount.value = visitedIds.size
-            _unvisitedMitraCount.value = ((_totalMitra.value ?: 0) - visitedIds.size).coerceAtLeast(0)
-            _pengirimanHariIni.value = list.filter { it.tanggal?.toDate()?.after(today) == true }.size
-        }.launchIn(viewModelScope)
 
         penjualanFlow.onEach { list ->
             _lastPenjualanList = list
@@ -125,7 +105,15 @@ class HomeViewModel(
                 set(java.util.Calendar.MINUTE, 0)
                 set(java.util.Calendar.SECOND, 0)
             }.time
-            _penjualanHariIni.value = list.filter { it.tanggal?.toDate()?.after(today) == true }.sumOf { it.totalHarga }
+            _penjualanHariIni.value = list.filter { it.tanggalNota?.toDate()?.after(today) == true }.sumOf { it.totalHarga }
+
+            // Visited mitra = mitra yang sudah ada data penjualan hari ini
+            val visitedIds = list
+                .filter { it.tanggalNota?.toDate()?.after(today) == true }
+                .map { it.mitraId }
+                .distinct()
+            _visitedMitraCount.value = visitedIds.size
+            _unvisitedMitraCount.value = ((_totalMitra.value ?: 0) - visitedIds.size).coerceAtLeast(0)
         }.launchIn(viewModelScope)
     }
 
@@ -173,7 +161,7 @@ class HomeViewModel(
 
         for (p in list) {
             // Count for top products & Omset
-            val date = p.tanggal?.toDate() ?: p.createdAt?.toDate() ?: continue
+            val date = p.tanggalNota?.toDate() ?: p.createdAt?.toDate() ?: continue
             cal.time = date
             
             if (cal.get(java.util.Calendar.MONTH) == currentMonth &&

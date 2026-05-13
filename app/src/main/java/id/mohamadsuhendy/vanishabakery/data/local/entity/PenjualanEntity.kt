@@ -6,18 +6,19 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "penjualan")
 data class PenjualanEntity(
     @PrimaryKey val id: String,
-    val pengirimanId: String,
     val mitraId: String,
     val mitraNama: String,
+    val ruteId: String = "",
+    val ruteNama: String = "",
     val namaProduk: String,
-    val jumlahDikirim: Int,
+    val jumlahKirim: Int,
+    val jumlahRetur: Int,
     val jumlahTerjual: Int,
-    val jumlahSisa: Int,
-    val tanggal: Long,
-    val staffId: String,
-    val staffNama: String,
     val hargaSatuan: Int = 0,
     val totalHarga: Int = 0,
+    val tanggalNota: Long,           // epoch millis of the physical note date
+    val inputOleh: String = "",
+    val inputOlehNama: String = "",
     val isSynced: Boolean = false,
     val createdAt: Long = System.currentTimeMillis()
 )

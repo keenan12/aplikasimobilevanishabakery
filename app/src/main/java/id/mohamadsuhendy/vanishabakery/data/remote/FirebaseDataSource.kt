@@ -242,7 +242,7 @@ class FirebaseDataSource {
     /** Admin: observe semua penjualan */
     fun observeAllPenjualan(): Flow<List<Penjualan>> = callbackFlow {
         val listener = db.collection(Constants.COLLECTION_PENJUALAN)
-            .orderBy("tanggal", Query.Direction.DESCENDING)
+            .orderBy("tanggalNota", Query.Direction.DESCENDING)
             .addSnapshotListener { snap, _ ->
                 val list = snap?.documents?.mapNotNull {
                     it.toObject(Penjualan::class.java)?.copy(id = it.id)
@@ -252,14 +252,15 @@ class FirebaseDataSource {
         awaitClose { listener.remove() }
     }
 
-    /** Sales: observe hanya penjualan miliknya (isolasi data) */
-    fun observePenjualanByStaff(staffId: String): Flow<List<Penjualan>> = callbackFlow {
+    /** Observe penjualan untuk periode tertentu (untuk heatmap & laporan) */
+    fun observePenjualanByPeriode(startTs: com.google.firebase.Timestamp, endTs: com.google.firebase.Timestamp): Flow<List<Penjualan>> = callbackFlow {
         val listener = db.collection(Constants.COLLECTION_PENJUALAN)
-            .whereEqualTo("staffId", staffId)
+            .whereGreaterThanOrEqualTo("tanggalNota", startTs)
+            .whereLessThan("tanggalNota", endTs)
             .addSnapshotListener { snap, _ ->
                 val list = snap?.documents?.mapNotNull {
                     it.toObject(Penjualan::class.java)?.copy(id = it.id)
-                }?.sortedByDescending { it.tanggal } ?: emptyList()
+                } ?: emptyList()
                 trySend(list)
             }
         awaitClose { listener.remove() }
@@ -268,6 +269,23 @@ class FirebaseDataSource {
     suspend fun addPenjualan(penjualan: Penjualan): String {
         val docRef = db.collection(Constants.COLLECTION_PENJUALAN).add(penjualan).await()
         return docRef.id
+    }
+
+    /** Hapus dokumen penjualan dari Firestore */
+    suspend fun deletePenjualan(docId: String) {
+        db.collection(Constants.COLLECTION_PENJUALAN).document(docId).delete().await()
+    }
+
+    /** Update field kirim/retur/terjual/totalHarga di Firestore */
+    suspend fun updatePenjualan(docId: String, kirim: Int, retur: Int, terjual: Int, totalHarga: Int) {
+        db.collection(Constants.COLLECTION_PENJUALAN).document(docId).update(
+            mapOf(
+                "jumlahKirim" to kirim,
+                "jumlahRetur" to retur,
+                "jumlahTerjual" to terjual,
+                "totalHarga" to totalHarga
+            )
+        ).await()
     }
 
     // ======================== LOG AKTIVITAS ========================
@@ -462,5 +480,39 @@ class FirebaseDataSource {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    // ======================== STOK RUTE ========================
+
+    fun observeStokRuteByPeriode(ruteId: String, startTs: Timestamp, endTs: Timestamp): Flow<List<StokRute>> = callbackFlow {
+        val listener = db.collection(Constants.COLLECTION_STOK_RUTE)
+            .whereEqualTo("ruteId", ruteId)
+            .whereGreaterThanOrEqualTo("tanggal", startTs)
+            .whereLessThan("tanggal", endTs)
+            .addSnapshotListener { snap, _ ->
+                val list = snap?.documents?.mapNotNull {
+                    it.toObject(StokRute::class.java)?.copy(id = it.id)
+                } ?: emptyList()
+                trySend(list)
+            }
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun addStokRute(stokRute: StokRute): String {
+        val docRef = db.collection(Constants.COLLECTION_STOK_RUTE).add(stokRute).await()
+        return docRef.id
+    }
+
+    fun observeAllStokRuteByPeriode(startTs: Timestamp, endTs: Timestamp): Flow<List<StokRute>> = callbackFlow {
+        val listener = db.collection(Constants.COLLECTION_STOK_RUTE)
+            .whereGreaterThanOrEqualTo("tanggal", startTs)
+            .whereLessThan("tanggal", endTs)
+            .addSnapshotListener { snap, _ ->
+                val list = snap?.documents?.mapNotNull {
+                    it.toObject(StokRute::class.java)?.copy(id = it.id)
+                } ?: emptyList()
+                trySend(list)
+            }
+        awaitClose { listener.remove() }
     }
 }

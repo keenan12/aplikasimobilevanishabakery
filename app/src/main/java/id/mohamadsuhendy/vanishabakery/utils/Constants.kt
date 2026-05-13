@@ -10,6 +10,7 @@ object Constants {
     const val COLLECTION_RUTE = "rute"
     const val COLLECTION_PRODUK = "produk"
     const val COLLECTION_NOTIFIKASI = "notifikasi"
+    const val COLLECTION_STOK_RUTE = "stok_rute"
 
     // Mitra Status
     const val STATUS_PENDING = "pending"
@@ -44,6 +45,7 @@ object Constants {
     const val LOG_TYPE_PENJUALAN = "penjualan"
     const val LOG_TYPE_RUTE = "rute"
     const val LOG_TYPE_USER = "user"
+    const val LOG_TYPE_STOK_RUTE = "stok_rute"
 
     // Action Types
     const val ACTION_TAMBAH_MITRA = "Pengajuan Mitra Baru"
@@ -51,14 +53,19 @@ object Constants {
     const val ACTION_REJECT_MITRA = "Tolak Mitra"
     const val ACTION_INPUT_PENGIRIMAN = "Input Pengiriman"
     const val ACTION_INPUT_PENJUALAN = "Input Penjualan"
+    const val ACTION_INPUT_NOTA = "Input Nota Mingguan"
     const val ACTION_TAMBAH_RUTE = "Tambah Rute"
     const val ACTION_EDIT_RUTE = "Edit Rute"
     const val ACTION_HAPUS_RUTE = "Hapus Rute"
     const val ACTION_TAMBAH_USER = "Tambah User"
     const val ACTION_NONAKTIF_USER = "Nonaktifkan User"
+    const val ACTION_INPUT_STOK_RUTE = "Input Stok Bawaan Rute"
 
     // Default sample routes (bisa diubah/ditambah oleh admin)
     val DEFAULT_RUTE_SALES_A = listOf("Cilandak", "Lebak Bulus", "Fatmawati", "TB Simatupang", "Pesanggrahan", "Kebayoran Lama")
     val DEFAULT_RUTE_SALES_B = listOf("Depok", "Citayam", "Bojong Gede", "Sawangan")
 
+    // Heatmap threshold (configurable)
+    const val HEATMAP_GREEN_THRESHOLD = 80f   // >= 80% = hijau
+    const val HEATMAP_RED_THRESHOLD = 50f     // < 50% = merah, 50-79% = oren
 }

@@ -28,8 +28,12 @@ import id.mohamadsuhendy.vanishabakery.data.model.Mitra
 import id.mohamadsuhendy.vanishabakery.data.model.Rute
 import id.mohamadsuhendy.vanishabakery.databinding.ActivityMapsBinding
 import id.mohamadsuhendy.vanishabakery.utils.Constants
+import id.mohamadsuhendy.vanishabakery.utils.HeatmapHelper
 import id.mohamadsuhendy.vanishabakery.utils.showToast
+import id.mohamadsuhendy.vanishabakery.data.model.Penjualan
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -44,6 +48,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var selectedMitraLatLng: LatLng? = null
     private var markers = mutableListOf<Marker>()
     private var polyline: Polyline? = null
+
+    // Heatmap data
+    private var mitraPerformaMap: Map<String, HeatmapHelper.MitraPerforma> = emptyMap()
+    private var isAdmin = false
 
     private val gpsLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
@@ -172,9 +180,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             android.util.Log.d("MapsActivity", "Loading data for user: ${user.nama} (Role: ${user.role})")
 
             if (user.isAdmin()) {
+                isAdmin = true
                 binding.fabFilterSales.visibility = View.VISIBLE
                 binding.fabFilterSales.setOnClickListener { showSalesFilterDialog() }
             } else {
+                isAdmin = false
                 // SALES ACCESS: Ensure filter sales is hidden
                 binding.fabFilterSales.visibility = View.GONE
                 currentSalesId = user.uid
@@ -198,6 +208,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             launch { ruteFlow.collect { routes -> setupRouteFilters(routes) } }
             launch { mitraFlow.collect { list -> allMitra = list; renderMapElements() } }
+
+            // Load heatmap data for admin (current month penjualan)
+            if (isAdmin) {
+                loadHeatmapData()
+            }
+        }
+    }
+
+    private fun loadHeatmapData() {
+        val app = application as VanishaBakeryApp
+        lifecycleScope.launch {
+            try {
+                val cal = Calendar.getInstance()
+                val startTs = com.google.firebase.Timestamp(Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_MONTH, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }.time)
+                val endTs = com.google.firebase.Timestamp(Calendar.getInstance().apply {
+                    add(Calendar.MONTH, 1)
+                    set(Calendar.DAY_OF_MONTH, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }.time)
+
+                val penjualanList = app.firebaseDataSource.observePenjualanByPeriode(startTs, endTs).first()
+                mitraPerformaMap = HeatmapHelper.calculatePerforma(penjualanList)
+                renderMapElements() // re-render with heatmap colors
+            } catch (e: Exception) {
+                android.util.Log.e("MapsActivity", "Failed to load heatmap data", e)
+            }
         }
     }
 
@@ -281,10 +324,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getMarkerIcon(mitra: Mitra): BitmapDescriptor {
+        val performa = mitraPerformaMap[mitra.id]
+
         val backgroundColor = when {
             mitra.isDeleted() -> Color.DKGRAY
-            mitra.isApproved() -> Color.parseColor("#00F5FF")
-            else -> Color.parseColor("#FF00FF")
+            !mitra.isApproved() -> Color.parseColor("#FF00FF")  // Pending = Magenta
+            isAdmin && performa != null -> HeatmapHelper.getColor(performa.level)  // Heatmap color
+            isAdmin -> HeatmapHelper.getColor(HeatmapHelper.HeatmapLevel.GRAY)     // No data = Gray
+            else -> Color.parseColor("#00F5FF")                // Sales view = Teal
         }
 
         val iconRes = if (mitra.isApproved()) R.drawable.ic_bakery_bag else R.drawable.ic_location
@@ -360,12 +407,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateUIForMitra(mitra: Mitra) {
         binding.tvMitraName.text = mitra.namaToko
+
+        val performa = mitraPerformaMap[mitra.id]
         val status = when {
             mitra.isDeleted() -> "NONAKTIF"
             mitra.isApproved() -> "Disetujui ✓"
             else -> "Pending ⏳"
         }
-        binding.tvMitraStatus.text = "Status: $status\nSales: ${mitra.staffNama}\nRute: ${mitra.ruteNama}\n${mitra.alamat}"
+
+        val heatmapInfo = if (isAdmin && performa != null && performa.totalKirim > 0) {
+            val label = HeatmapHelper.getLabel(performa.level)
+            "\nPerforma: ${String.format("%.0f", performa.rasioLaku)}% ($label)" +
+            "\nKirim: ${performa.totalKirim} | Laku: ${performa.totalTerjual} | Retur: ${performa.totalRetur}"
+        } else if (isAdmin) {
+            "\nPerforma: Belum ada data"
+        } else ""
+
+        binding.tvMitraStatus.text = "Status: $status\nSales: ${mitra.staffNama}\nRute: ${mitra.ruteNama}\n${mitra.alamat}$heatmapInfo"
         selectedMitraLatLng = LatLng(mitra.latitude, mitra.longitude)
         
         // Update distance if location is available

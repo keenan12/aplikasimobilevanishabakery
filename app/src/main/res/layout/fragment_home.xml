@@ -403,5 +403,41 @@
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- ADMIN ACTIONS (Only visible to admin) -->
+        <LinearLayout
+            android:id="@+id/layoutAdminActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/cardMapsPreview">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MANAJEMEN OPERASIONAL"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-black"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnManageStokRute"
+                style="@style/Widget.Vanisha.Button.Neo"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="KELOLA STOK BAWAAN RUTE"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_neo_button_yellow"
+                app:icon="@drawable/ic_box"
+                app:iconTint="@color/black"
+                app:iconSize="24dp"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

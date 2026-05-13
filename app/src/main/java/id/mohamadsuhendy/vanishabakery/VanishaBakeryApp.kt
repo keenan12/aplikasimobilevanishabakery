@@ -9,6 +9,7 @@ import id.mohamadsuhendy.vanishabakery.data.repository.PengirimanRepository
 import id.mohamadsuhendy.vanishabakery.data.repository.PenjualanRepository
 import id.mohamadsuhendy.vanishabakery.data.repository.ProdukRepository
 import id.mohamadsuhendy.vanishabakery.data.repository.RuteRepository
+import id.mohamadsuhendy.vanishabakery.data.repository.StokRuteRepository
 import id.mohamadsuhendy.vanishabakery.utils.NetworkUtils
 
 class VanishaBakeryApp : Application() {
@@ -34,6 +35,9 @@ class VanishaBakeryApp : Application() {
     }
     val produkRepository by lazy {
         ProdukRepository(firebaseDataSource)
+    }
+    val stokRuteRepository by lazy {
+        StokRuteRepository(firebaseDataSource, database.stokRuteDao(), networkUtils)
     }
 
     companion object {

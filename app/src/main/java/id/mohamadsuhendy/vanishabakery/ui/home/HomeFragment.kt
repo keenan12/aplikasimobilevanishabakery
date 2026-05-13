@@ -250,6 +250,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         binding.btnNotifikasi.setOnClickListener {
             NotifikasiBottomSheet().show(childFragmentManager, NotifikasiBottomSheet.TAG)
         }
+
+        binding.btnManageStokRute.setOnClickListener {
+            val intent = android.content.Intent(requireContext(), id.mohamadsuhendy.vanishabakery.ui.admin.ManageStokRuteActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun launchCamera() {
@@ -266,6 +271,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
             binding.tvGreeting.text = "Halo, ${user?.nama ?: "Admin"}!"
             user?.fotoUrl?.let { binding.ivProfilePhoto.loadImageCircle(it) }
+            
+            if (user?.isAdmin() == true) {
+                binding.layoutAdminActions.visibility = View.VISIBLE
+            } else {
+                binding.layoutAdminActions.visibility = View.GONE
+            }
         }
 
         viewModel.visitedMitraCount.observe(viewLifecycleOwner) { count ->

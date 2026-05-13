@@ -17,15 +17,17 @@ class PenjualanRepository(
     private val dao: PenjualanDao,
     private val network: NetworkUtils
 ) {
-    // ── Admin: lihat SEMUA penjualan ─────────────────────────────
+    // ── Observe semua penjualan (Admin) ──────────────────────────
     fun observeAllPenjualan(): Flow<List<Penjualan>> = remote.observeAllPenjualan()
-
-    // ── Sales: hanya lihat penjualan MILIKNYA (data isolation) ───
-    fun observePenjualanByStaff(staffId: String): Flow<List<Penjualan>> =
-        remote.observePenjualanByStaff(staffId)
 
     // ── Offline Room ─────────────────────────────────────────────
     fun getLocalPenjualan(): Flow<List<PenjualanEntity>> = dao.getAllPenjualan()
+
+    fun getLocalPenjualanByPeriode(startDate: Long, endDate: Long): Flow<List<PenjualanEntity>> =
+        dao.getPenjualanByPeriode(startDate, endDate)
+
+    fun getLocalPenjualanByMitraPeriode(mitraId: String, startDate: Long, endDate: Long): Flow<List<PenjualanEntity>> =
+        dao.getPenjualanByMitraPeriode(mitraId, startDate, endDate)
 
     fun getTodaySales(): Flow<Int?> {
         val (start, end) = getTodayRange()
@@ -36,6 +38,9 @@ class PenjualanRepository(
         val (start, end) = getTodayRange()
         return dao.getTodaySalesByStaff(start, end, staffId)
     }
+
+    fun getOmsetByPeriode(startDate: Long, endDate: Long): Flow<Int?> =
+        dao.getOmsetByPeriode(startDate, endDate)
 
     private fun getTodayRange(): Pair<Long, Long> {
         val cal = java.util.Calendar.getInstance()
@@ -48,82 +53,112 @@ class PenjualanRepository(
         return Pair(start, end)
     }
 
-    // ── Input penjualan/retur (sales action) ────────────────────
-    // jumlahSisa dihitung otomatis: jumlahDikirim - jumlahTerjual
-    // Validasi: jumlahTerjual <= jumlahDikirim (dilakukan di ViewModel)
-    suspend fun addPenjualan(
-        pengirimanId: String,
+    // ── Rapid Entry: Simpan batch penjualan untuk 1 mitra ───────
+    suspend fun saveBatchPenjualan(
         mitraId: String,
         mitraNama: String,
-        namaProduk: String,
-        jumlahDikirim: Int,
-        jumlahTerjual: Int,
-        hargaSatuan: Int,
-        totalHarga: Int,
-        staffId: String,
-        staffNama: String
+        ruteId: String,
+        ruteNama: String,
+        tanggalNota: Long,
+        items: List<PenjualanItem>,
+        adminId: String,
+        adminNama: String
     ): Result<String> {
         return try {
-            val jumlahSisa = jumlahDikirim - jumlahTerjual  // auto-hitung retur
             val now = Timestamp.now()
+            val tanggalTs = Timestamp(java.util.Date(tanggalNota))
+            var savedCount = 0
 
-            if (network.isOnline) {
+            items.forEach { item ->
+                // Skip produk yang kirim=0 dan retur=0
+                if (item.kirim <= 0 && item.retur <= 0) return@forEach
+
+                val terjual = maxOf(0, item.kirim - item.retur)
+                val totalHarga = terjual * item.hargaSatuan
+                val docId = UUID.randomUUID().toString()
+
                 val penjualan = Penjualan(
-                    pengirimanId = pengirimanId,
                     mitraId = mitraId, mitraNama = mitraNama,
-                    namaProduk = namaProduk,
-                    jumlahDikirim = jumlahDikirim,
-                    jumlahTerjual = jumlahTerjual,
-                    jumlahSisa = jumlahSisa,
-                    hargaSatuan = hargaSatuan,
+                    ruteId = ruteId, ruteNama = ruteNama,
+                    namaProduk = item.namaProduk,
+                    jumlahKirim = item.kirim,
+                    jumlahRetur = item.retur,
+                    jumlahTerjual = terjual,
+                    hargaSatuan = item.hargaSatuan,
                     totalHarga = totalHarga,
-                    tanggal = now, staffId = staffId, staffNama = staffNama,
+                    tanggalNota = tanggalTs,
+                    inputOleh = adminId, inputOlehNama = adminNama,
                     isSynced = true, createdAt = now
                 )
-                val docId = remote.addPenjualan(penjualan)
 
+                val entity = PenjualanEntity(
+                    id = docId, mitraId = mitraId, mitraNama = mitraNama,
+                    ruteId = ruteId, ruteNama = ruteNama,
+                    namaProduk = item.namaProduk,
+                    jumlahKirim = item.kirim, jumlahRetur = item.retur,
+                    jumlahTerjual = terjual,
+                    hargaSatuan = item.hargaSatuan, totalHarga = totalHarga,
+                    tanggalNota = tanggalNota,
+                    inputOleh = adminId, inputOlehNama = adminNama,
+                    isSynced = network.isOnline
+                )
+
+                if (network.isOnline) {
+                    val firebaseId = remote.addPenjualan(penjualan)
+                    dao.insertPenjualan(entity.copy(id = firebaseId, isSynced = true))
+                } else {
+                    dao.insertPenjualan(entity)
+                }
+                savedCount++
+            }
+
+            // Log aktivitas
+            if (savedCount > 0 && network.isOnline) {
                 remote.addLogAktivitas(
                     LogAktivitas(
-                        userId = staffId, userNama = staffNama,
-                        userRole = Constants.ROLE_STAFF,
-                        aksi = Constants.ACTION_INPUT_PENJUALAN,
-                        deskripsi = "Penjualan $jumlahTerjual $namaProduk di $mitraNama, retur $jumlahSisa",
-                        referensiId = docId, tipe = Constants.LOG_TYPE_PENJUALAN,
+                        userId = adminId, userNama = adminNama,
+                        userRole = Constants.ROLE_ADMIN,
+                        aksi = Constants.ACTION_INPUT_NOTA,
+                        deskripsi = "Input nota $mitraNama: $savedCount produk",
+                        referensiId = mitraId, tipe = Constants.LOG_TYPE_PENJUALAN,
                         createdAt = now
                     )
                 )
-
-                dao.insertPenjualan(
-                    PenjualanEntity(
-                        id = docId, pengirimanId = pengirimanId,
-                        mitraId = mitraId, mitraNama = mitraNama,
-                        namaProduk = namaProduk, jumlahDikirim = jumlahDikirim,
-                        jumlahTerjual = jumlahTerjual, jumlahSisa = jumlahSisa,
-                        hargaSatuan = hargaSatuan, totalHarga = totalHarga,
-                        tanggal = now.toDate().time,
-                        staffId = staffId, staffNama = staffNama,
-                        isSynced = true
-                    )
-                )
-                Result.Success(docId)
-            } else {
-                val tempId = UUID.randomUUID().toString()
-                dao.insertPenjualan(
-                    PenjualanEntity(
-                        id = tempId, pengirimanId = pengirimanId,
-                        mitraId = mitraId, mitraNama = mitraNama,
-                        namaProduk = namaProduk, jumlahDikirim = jumlahDikirim,
-                        jumlahTerjual = jumlahTerjual, jumlahSisa = jumlahSisa,
-                        hargaSatuan = hargaSatuan, totalHarga = totalHarga,
-                        tanggal = System.currentTimeMillis(),
-                        staffId = staffId, staffNama = staffNama,
-                        isSynced = false
-                    )
-                )
-                Result.Success(tempId)
             }
+
+            Result.Success("$savedCount produk tersimpan untuk $mitraNama")
         } catch (e: Exception) {
             Result.Error(e.message ?: "Gagal menyimpan penjualan", e)
+        }
+    }
+
+    // ── Hapus penjualan (Admin) ────────────────────────────────
+    suspend fun deletePenjualanById(penjualanId: String): Result<String> {
+        return try {
+            if (network.isOnline) {
+                remote.deletePenjualan(penjualanId)
+            }
+            dao.deletePenjualanById(penjualanId)
+            Result.Success("Data berhasil dihapus")
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Gagal menghapus data", e)
+        }
+    }
+
+    // ── Update penjualan (Admin) ─────────────────────────────
+    suspend fun updatePenjualanFields(
+        penjualanId: String, kirim: Int, retur: Int, hargaSatuan: Int
+    ): Result<String> {
+        return try {
+            val terjual = maxOf(0, kirim - retur)
+            val totalHarga = terjual * hargaSatuan
+            if (network.isOnline) {
+                remote.updatePenjualan(penjualanId, kirim, retur, terjual, totalHarga)
+            }
+            dao.updatePenjualanFields(penjualanId, kirim, retur, terjual, totalHarga)
+            Result.Success("Data berhasil diperbarui")
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Gagal memperbarui data", e)
         }
     }
 
@@ -133,16 +168,16 @@ class PenjualanRepository(
         unsynced.forEach { entity ->
             try {
                 val penjualan = Penjualan(
-                    pengirimanId = entity.pengirimanId,
                     mitraId = entity.mitraId, mitraNama = entity.mitraNama,
+                    ruteId = entity.ruteId, ruteNama = entity.ruteNama,
                     namaProduk = entity.namaProduk,
-                    jumlahDikirim = entity.jumlahDikirim,
+                    jumlahKirim = entity.jumlahKirim,
+                    jumlahRetur = entity.jumlahRetur,
                     jumlahTerjual = entity.jumlahTerjual,
-                    jumlahSisa = entity.jumlahSisa,
                     hargaSatuan = entity.hargaSatuan,
                     totalHarga = entity.totalHarga,
-                    tanggal = Timestamp(java.util.Date(entity.tanggal)),
-                    staffId = entity.staffId, staffNama = entity.staffNama,
+                    tanggalNota = Timestamp(java.util.Date(entity.tanggalNota)),
+                    inputOleh = entity.inputOleh, inputOlehNama = entity.inputOlehNama,
                     isSynced = true, createdAt = Timestamp.now()
                 )
                 val docId = remote.addPenjualan(penjualan)
@@ -152,3 +187,11 @@ class PenjualanRepository(
         }
     }
 }
+
+/** Data class untuk item input per produk di Rapid Entry */
+data class PenjualanItem(
+    val namaProduk: String,
+    val hargaSatuan: Int,
+    val kirim: Int,
+    val retur: Int
+)
