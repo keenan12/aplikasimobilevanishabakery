@@ -79,48 +79,25 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             val user = app.authRepository.getCurrentUserData() ?: return@launch
 
-            if (user.isAdmin()) {
-                // For Admin: Combine pending mitras + regular notifications for a complete picture
-                kotlinx.coroutines.flow.combine(
-                    app.firebaseDataSource.observePendingMitra(),
-                    app.firebaseDataSource.observeNotifikasiByUser(user.uid, true)
-                ) { pendingMitras, notifResult ->
-
-                    // Convert pending mitras to notification items
-                    val mitraNotifs = pendingMitras.map { mitra ->
-                        NotifItem(
-                            notifId = "", // pending mitras are not actual notif documents
-                            judul = "📋 Pengajuan Mitra Baru",
-                            pesan = "${mitra.staffNama} mengajukan: ${mitra.namaToko} (${mitra.ruteNama})",
-                            waktu = mitra.createdAt?.toDate(),
-                            isUnread = true,
-                            referensiId = mitra.id
-                        )
-                    }
-
-                    // Get regular notifications
-                    val regularNotifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
-                        notifResult.data.map { notif ->
-                            NotifItem(
-                                notifId = notif.id,
-                                judul = notif.judul,
-                                pesan = notif.pesan,
-                                waktu = notif.createdAt?.toDate(),
-                                isUnread = !notif.isRead,
-                                referensiId = notif.referensiId
-                            )
-                        }
+            app.firebaseDataSource.observeNotifikasiByUser(user.uid, user.isAdmin())
+                .collect { notifResult ->
+                    val notifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
+                        notifResult.data
+                            .filter { !it.isRead } // Hanya tampilkan yang belum dibaca
+                            .map { notif ->
+                                NotifItem(
+                                    notifId = notif.id,
+                                    judul = notif.judul,
+                                    pesan = notif.pesan,
+                                    waktu = notif.createdAt?.toDate(),
+                                    isUnread = !notif.isRead,
+                                    referensiId = notif.referensiId
+                                )
+                            }
                     } else emptyList()
 
-                    // Merge: pending mitras first, then other notifs (deduplicated by referensiId)
-                    val allNotifs = (mitraNotifs + regularNotifs)
-                        .distinctBy { it.referensiId.ifEmpty { it.judul + it.pesan } }
-                        .sortedByDescending { it.waktu }
-
-                    allNotifs
-                }.collect { allNotifs ->
-                    adapter.submitList(allNotifs)
-                    if (allNotifs.isEmpty()) {
+                    adapter.submitList(notifs)
+                    if (notifs.isEmpty()) {
                         binding.layoutEmptyNotif.visibility = View.VISIBLE
                         binding.rvNotifikasi.visibility = View.GONE
                     } else {
@@ -128,60 +105,6 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                         binding.rvNotifikasi.visibility = View.VISIBLE
                     }
                 }
-            } else {
-                // For Staff: Combine their mitra status changes + targeted notifications
-                kotlinx.coroutines.flow.combine(
-                    app.firebaseDataSource.observeMitraByStaff(user.uid),
-                    app.firebaseDataSource.observeNotifikasiByUser(user.uid, false)
-                ) { mitraList, notifResult ->
-
-                    // Show recently approved/rejected mitras as notifications
-                    val mitraStatusNotifs = mitraList
-                        .filter { it.status == "approved" || it.status == "rejected" }
-                        .sortedByDescending { it.updatedAt }
-                        .map { mitra ->
-                            val emoji = if (mitra.status == "approved") "✅" else "❌"
-                            val statusText = if (mitra.status == "approved") "Disetujui" else "Ditolak"
-                            NotifItem(
-                                notifId = "",
-                                judul = "$emoji Mitra $statusText",
-                                pesan = "Pengajuan mitra ${mitra.namaToko} telah $statusText oleh Admin",
-                                waktu = mitra.updatedAt?.toDate() ?: mitra.createdAt?.toDate(),
-                                isUnread = true,
-                                referensiId = mitra.id
-                            )
-                        }
-
-                    // Get targeted notifications from notifikasi collection
-                    val targetedNotifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
-                        notifResult.data.map { notif ->
-                            NotifItem(
-                                notifId = notif.id,
-                                judul = notif.judul,
-                                pesan = notif.pesan,
-                                waktu = notif.createdAt?.toDate(),
-                                isUnread = !notif.isRead,
-                                referensiId = notif.referensiId
-                            )
-                        }
-                    } else emptyList()
-
-                    // Merge and deduplicate
-                    (mitraStatusNotifs + targetedNotifs)
-                        .distinctBy { it.referensiId.ifEmpty { it.judul + it.pesan } }
-                        .sortedByDescending { it.waktu }
-
-                }.collect { staffNotifs ->
-                    adapter.submitList(staffNotifs)
-                    if (staffNotifs.isEmpty()) {
-                        binding.layoutEmptyNotif.visibility = View.VISIBLE
-                        binding.rvNotifikasi.visibility = View.GONE
-                    } else {
-                        binding.layoutEmptyNotif.visibility = View.GONE
-                        binding.rvNotifikasi.visibility = View.VISIBLE
-                    }
-                }
-            }
         }
     }
 
