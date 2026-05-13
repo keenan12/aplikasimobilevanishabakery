@@ -26,6 +26,10 @@ class StokRuteRepository(
     fun getLocalStokRuteByPeriode(ruteId: String, startDate: Long, endDate: Long): Flow<List<StokRuteEntity>> =
         dao.getStokRuteByPeriode(ruteId, startDate, endDate)
 
+    suspend fun getStokRuteByExactDate(ruteId: String, tanggal: Long): StokRuteEntity? {
+        return dao.getStokRuteByExactDate(ruteId, tanggal)
+    }
+
     suspend fun saveStokRute(
         ruteId: String,
         ruteNama: String,
@@ -35,7 +39,8 @@ class StokRuteRepository(
         adminNama: String
     ): Result<String> {
         return try {
-            val id = UUID.randomUUID().toString()
+            val existing = dao.getStokRuteByExactDate(ruteId, tanggal)
+            val id = existing?.id ?: UUID.randomUUID().toString()
             val stokDataJson = gson.toJson(stokData)
             
             val entity = StokRuteEntity(
@@ -59,15 +64,16 @@ class StokRuteRepository(
                     inputOlehNama = adminNama,
                     createdAt = Timestamp.now()
                 )
-                val firestoreId = remote.addStokRute(model)
-                dao.insertStokRute(entity.copy(id = firestoreId, isSynced = true))
+                remote.setStokRute(id, model)
+                dao.insertStokRute(entity.copy(isSynced = true))
                 
                 // Log Aktivitas
+                val aksi = if (existing == null) Constants.ACTION_INPUT_STOK_RUTE else "Update Stok Bawaan Rute"
                 remote.addLogAktivitas(LogAktivitas(
                     userId = adminId, userNama = adminNama,
                     userRole = Constants.ROLE_ADMIN,
-                    aksi = Constants.ACTION_INPUT_STOK_RUTE,
-                    deskripsi = "Input stok bawaan rute $ruteNama",
+                    aksi = aksi,
+                    deskripsi = "$aksi $ruteNama",
                     referensiId = ruteId, tipe = Constants.LOG_TYPE_STOK_RUTE,
                     createdAt = Timestamp.now()
                 ))
@@ -97,9 +103,8 @@ class StokRuteRepository(
                     inputOlehNama = entity.inputOlehNama,
                     createdAt = Timestamp.now()
                 )
-                val docId = remote.addStokRute(model)
-                dao.deleteStokRute(entity)
-                dao.insertStokRute(entity.copy(id = docId, isSynced = true))
+                remote.setStokRute(entity.id, model)
+                dao.insertStokRute(entity.copy(isSynced = true))
             } catch (_: Exception) { }
         }
     }

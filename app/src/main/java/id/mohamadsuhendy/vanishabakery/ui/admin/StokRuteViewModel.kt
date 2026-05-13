@@ -23,6 +23,10 @@ class StokRuteViewModel(
     private val _saveState = MutableLiveData<Result<String>>()
     val saveState: LiveData<Result<String>> = _saveState
 
+    fun checkExistingStok(ruteId: String, tanggal: Long) = liveData {
+        emit(stokRuteRepository.getStokRuteByExactDate(ruteId, tanggal))
+    }
+
     fun saveStokRute(
         ruteId: String,
         ruteNama: String,

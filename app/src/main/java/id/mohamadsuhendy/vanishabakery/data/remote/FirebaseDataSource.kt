@@ -498,10 +498,8 @@ class FirebaseDataSource {
         awaitClose { listener.remove() }
     }
 
-    suspend fun addStokRute(stokRute: StokRute): String {
-        val docRef = db.collection(Constants.COLLECTION_STOK_RUTE).document()
-        docRef.set(stokRute)
-        return docRef.id
+    fun setStokRute(docId: String, stokRute: StokRute) {
+        db.collection(Constants.COLLECTION_STOK_RUTE).document(docId).set(stokRute)
     }
 
     fun observeAllStokRuteByPeriode(startTs: Timestamp, endTs: Timestamp): Flow<List<StokRute>> = callbackFlow {

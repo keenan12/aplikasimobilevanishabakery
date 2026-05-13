@@ -54,6 +54,7 @@ class ManageStokRuteActivity : AppCompatActivity() {
         binding.acRute.setOnClickListener { binding.acRute.showDropDown() }
         binding.acRute.setOnItemClickListener { _, _, position, _ ->
             selectedRute = allRute[position]
+            checkExistingStok()
         }
 
         binding.btnPilihTanggal.setOnClickListener {
@@ -73,6 +74,7 @@ class ManageStokRuteActivity : AppCompatActivity() {
             { _, year, month, day ->
                 selectedCalendar.set(year, month, day)
                 updateDateButtonText()
+                checkExistingStok()
             },
             selectedCalendar.get(Calendar.YEAR),
             selectedCalendar.get(Calendar.MONTH),
@@ -108,9 +110,35 @@ class ManageStokRuteActivity : AppCompatActivity() {
                 }
                 is Result.Error -> {
                     binding.btnSimpan.isEnabled = true
-                    binding.btnSimpan.text = "SIMPAN STOK BAWAAN"
+                    binding.btnSimpan.text = if (binding.btnSimpan.text.toString().contains("UPDATE")) "UPDATE STOK BAWAAN" else "SIMPAN STOK BAWAAN"
                     Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun checkExistingStok() {
+        val rute = selectedRute ?: return
+        
+        selectedCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        selectedCalendar.set(Calendar.MINUTE, 0)
+        selectedCalendar.set(Calendar.SECOND, 0)
+        selectedCalendar.set(Calendar.MILLISECOND, 0)
+
+        viewModel.checkExistingStok(rute.id, selectedCalendar.timeInMillis).observe(this) { existing ->
+            if (existing != null) {
+                try {
+                    val type = object : com.google.gson.reflect.TypeToken<Map<String, Int>>() {}.type
+                    val map: Map<String, Int> = com.google.gson.Gson().fromJson(existing.stokDataJson, type)
+                    adapter.restoreQuantities(map)
+                    binding.btnSimpan.text = "UPDATE STOK BAWAAN"
+                } catch (e: Exception) {
+                    adapter.resetAll()
+                    binding.btnSimpan.text = "SIMPAN STOK BAWAAN"
+                }
+            } else {
+                adapter.resetAll()
+                binding.btnSimpan.text = "SIMPAN STOK BAWAAN"
             }
         }
     }
@@ -146,6 +174,17 @@ class ManageStokRuteActivity : AppCompatActivity() {
             notifyDataSetChanged()
         }
 
+        fun restoreQuantities(stokData: Map<String, Int>) {
+            quantities.clear()
+            quantities.putAll(stokData)
+            notifyDataSetChanged()
+        }
+
+        fun resetAll() {
+            quantities.clear()
+            notifyDataSetChanged()
+        }
+
         fun getStokData(): Map<String, Int> {
             return quantities.filter { it.value > 0 }
         }
@@ -159,15 +198,33 @@ class ManageStokRuteActivity : AppCompatActivity() {
             val produk = list[position]
             holder.binding.tvNamaProduk.text = produk.nama
             
-            // Handle edit text change
-            holder.binding.etJumlah.setOnFocusChangeListener { _, _ ->
-                val qty = holder.binding.etJumlah.text.toString().toIntOrNull() ?: 0
-                quantities[produk.nama] = qty
+            // Remove previous listener to avoid infinite loop when setting text
+            if (holder.textWatcher != null) {
+                holder.binding.etJumlah.removeTextChangedListener(holder.textWatcher)
             }
+            
+            val savedQty = quantities[produk.nama] ?: 0
+            if (savedQty > 0) {
+                holder.binding.etJumlah.setText(savedQty.toString())
+            } else {
+                holder.binding.etJumlah.setText("")
+            }
+            
+            holder.textWatcher = object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: android.text.Editable?) {
+                    val qty = s?.toString()?.toIntOrNull() ?: 0
+                    quantities[produk.nama] = qty
+                }
+            }
+            holder.binding.etJumlah.addTextChangedListener(holder.textWatcher)
         }
 
         override fun getItemCount() = list.size
 
-        class ViewHolder(val binding: ItemStokProdukEntryBinding) : RecyclerView.ViewHolder(binding.root)
+        class ViewHolder(val binding: ItemStokProdukEntryBinding) : RecyclerView.ViewHolder(binding.root) {
+            var textWatcher: android.text.TextWatcher? = null
+        }
     }
 }
