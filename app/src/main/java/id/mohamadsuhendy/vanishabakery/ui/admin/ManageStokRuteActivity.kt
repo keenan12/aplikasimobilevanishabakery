@@ -32,6 +32,7 @@ class ManageStokRuteActivity : AppCompatActivity() {
         )
     }
 
+    private var allRute = listOf<Rute>()
     private var selectedRute: Rute? = null
     private var selectedCalendar = Calendar.getInstance()
     private val adapter = StokProdukAdapter()
@@ -49,6 +50,11 @@ class ManageStokRuteActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener { finish() }
 
         binding.rvProdukStok.adapter = adapter
+
+        binding.acRute.setOnClickListener { binding.acRute.showDropDown() }
+        binding.acRute.setOnItemClickListener { _, _, position, _ ->
+            selectedRute = allRute[position]
+        }
 
         binding.btnPilihTanggal.setOnClickListener {
             showDatePicker()
@@ -81,11 +87,9 @@ class ManageStokRuteActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.ruteList.observe(this) { ruteList ->
+            allRute = ruteList
             val adapterRute = ArrayAdapter(this, android.R.layout.simple_list_item_1, ruteList.map { it.namaRute })
             binding.acRute.setAdapter(adapterRute)
-            binding.acRute.setOnItemClickListener { _, _, position, _ ->
-                selectedRute = ruteList[position]
-            }
         }
 
         viewModel.produkList.observe(this) { produkList ->
