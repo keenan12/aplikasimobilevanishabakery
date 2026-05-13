@@ -31,7 +31,7 @@ class StokRuteViewModel(
     ) {
         viewModelScope.launch {
             _saveState.value = Result.Loading
-            val user = authRepository.getCurrentUser()
+            val user = authRepository.getCurrentUserData()
             if (user != null) {
                 _saveState.value = stokRuteRepository.saveStokRute(
                     ruteId, ruteNama, tanggal, stokData, user.uid, user.nama
