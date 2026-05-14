@@ -64,6 +64,7 @@ class AktivitasFragment : Fragment() {
 
         setupFilters()
         setupSalesFilter()
+        setupSearch()
 
         binding.btnDeleteAll.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -177,6 +178,15 @@ class AktivitasFragment : Fragment() {
                 binding.cardSalesFilter.visibility = android.view.View.GONE
             }
         }
+    }
+    private fun setupSearch() {
+        binding.etSearch.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setSearchQuery(s.toString())
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
     }
 
     override fun onDestroyView() {

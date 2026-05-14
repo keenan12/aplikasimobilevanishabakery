@@ -37,7 +37,22 @@ class ManageMitraActivity : AppCompatActivity() {
         setupRecyclerView()
         setupSearch()
         setupFilters()
+        setupRefresh()
         observeData()
+    }
+
+    private fun setupRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance().terminate().addOnCompleteListener {
+                com.google.firebase.firestore.FirebaseFirestore.getInstance().clearPersistence().addOnCompleteListener {
+                    com.google.firebase.firestore.FirebaseFirestore.getInstance().enableNetwork().addOnCompleteListener {
+                        binding.swipeRefresh.isRefreshing = false
+                        showToast("Sinkronisasi data ulang berhasil")
+                        // The flows will automatically reconnect
+                    }
+                }
+            }
+        }
     }
 
     private fun setupToolbar() {

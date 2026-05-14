@@ -29,6 +29,9 @@ class AktivitasViewModel(
     
     // Selected Sales ID for Admin filter
     private var selectedSalesId = ""
+    
+    // Search query
+    private var searchQuery = ""
 
     init { observeLogs() }
 
@@ -79,6 +82,11 @@ class AktivitasViewModel(
         applyFilter()
     }
 
+    fun setSearchQuery(query: String) {
+        searchQuery = query
+        applyFilter()
+    }
+
     private fun applyFilter() {
         _logList.value = _allLogs.filter { log ->
             // Filter by Sales ID
@@ -91,8 +99,16 @@ class AktivitasViewModel(
                 }
                 cal.get(Calendar.MONTH) + 1 == selectedMonth && cal.get(Calendar.YEAR) == selectedYear
             }
+
+            // Filter by Search Query
+            val matchSearch = if (searchQuery.isEmpty()) true else {
+                log.aksi.contains(searchQuery, ignoreCase = true) ||
+                log.deskripsi.contains(searchQuery, ignoreCase = true) ||
+                log.tipe.contains(searchQuery, ignoreCase = true) ||
+                log.userNama.contains(searchQuery, ignoreCase = true)
+            }
             
-            matchSales && matchMonth
+            matchSales && matchMonth && matchSearch
         }.sortedByDescending { it.createdAt }
     }
 

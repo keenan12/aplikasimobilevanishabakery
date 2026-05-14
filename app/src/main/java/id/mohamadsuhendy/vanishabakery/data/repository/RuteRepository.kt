@@ -8,6 +8,7 @@ import id.mohamadsuhendy.vanishabakery.data.remote.FirebaseDataSource
 import id.mohamadsuhendy.vanishabakery.utils.Constants
 import id.mohamadsuhendy.vanishabakery.utils.Result
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEach
 
 class RuteRepository(
@@ -17,12 +18,12 @@ class RuteRepository(
 
     // ── Admin: lihat semua rute ──────────────────────────────────
     fun observeAllRute(): Flow<List<Rute>> = remote.observeAllRute()
-        .onEach { list -> cacheRute(list) }           // auto-cache ke Room
+        .onEach { list -> cacheRute(list, "") }           // Admin context, staffId empty or handle differently
 
     // ── Sales: hanya rute miliknya (data isolation) ──────────────
     fun observeRuteByStaff(staffId: String): Flow<List<Rute>> =
         remote.observeRuteByStaff(staffId)
-            .onEach { list -> cacheRute(list) }
+            .onEach { list -> cacheRute(list, staffId) }
 
     // ── Offline fallback dari Room ────────────────────────────────
     fun getLocalAllRute(): Flow<List<RuteEntity>> = dao.getAllRute()
@@ -117,7 +118,17 @@ class RuteRepository(
     }
 
     // ── Internal: sync cache Room ─────────────────────────────────
-    private suspend fun cacheRute(list: List<Rute>) {
+    private suspend fun cacheRute(list: List<Rute>, staffId: String) {
+        // 1. Get current local IDs for this staff
+        val localRutes = dao.getRuteByStaff(staffId).first()
+        val localIds = localRutes.map { it.id }.toSet()
+        val remoteIds = list.map { it.id }.toSet()
+
+        // 2. Delete local items not in remote
+        val toDelete = localIds - remoteIds
+        toDelete.forEach { dao.deleteRuteById(it) }
+
+        // 3. Update/Insert remote items
         list.forEach { rute ->
             dao.insertRute(
                 RuteEntity(

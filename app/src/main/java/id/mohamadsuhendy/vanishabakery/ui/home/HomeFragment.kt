@@ -256,6 +256,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             val intent = android.content.Intent(requireContext(), ManageStokRuteActivity::class.java)
             startActivity(intent)
         }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance().terminate().addOnCompleteListener {
+                com.google.firebase.firestore.FirebaseFirestore.getInstance().clearPersistence().addOnCompleteListener {
+                    com.google.firebase.firestore.FirebaseFirestore.getInstance().enableNetwork().addOnCompleteListener {
+                        binding.swipeRefresh.isRefreshing = false
+                        requireContext().showToast("Sinkronisasi data berhasil")
+                    }
+                }
+            }
+        }
     }
 
     private fun launchCamera() {

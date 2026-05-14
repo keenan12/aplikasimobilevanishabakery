@@ -209,6 +209,32 @@
                 <AutoCompleteTextView android:id="@+id/spinnerBulanFilter" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
                 <AutoCompleteTextView android:id="@+id/spinnerTahunFilter" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
 
+                <!-- Search Bar -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:strokeWidth="3dp"
+                    app:strokeColor="@color/black"
+                    app:cardElevation="0dp">
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="Cari aktivitas (tipe, aksi, deskripsi)..."
+                        android:paddingHorizontal="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/text_hint"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="12dp"
+                        app:drawableTint="@color/black" />
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

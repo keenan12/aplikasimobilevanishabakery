@@ -271,7 +271,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         polyline?.remove()
 
         val filteredMitra = allMitra.filter { 
-            if (currentRouteId.isEmpty()) true else it.ruteId == currentRouteId 
+            !it.isDeleted() && (if (currentRouteId.isEmpty()) true else it.ruteId == currentRouteId)
         }.sortedBy { it.namaToko }
 
         if (filteredMitra.isEmpty()) return

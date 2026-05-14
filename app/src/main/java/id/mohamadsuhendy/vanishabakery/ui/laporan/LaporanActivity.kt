@@ -34,6 +34,7 @@ class LaporanActivity : AppCompatActivity() {
     private var selectedMonth = Calendar.getInstance().get(Calendar.MONTH)
     private var selectedYear = Calendar.getInstance().get(Calendar.YEAR)
     private var currentPenjualanList: List<Penjualan> = emptyList()
+    private var filteredPenjualanList: List<Penjualan> = emptyList()
     private var currentStokRuteList: List<StokRute> = emptyList()
     private var lastExportedFile: File? = null
 
@@ -74,6 +75,28 @@ class LaporanActivity : AppCompatActivity() {
                 }
             } ?: exportToExcel(shareAfter = true)
         }
+
+        binding.etSearchLaporan.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applySearch(s.toString())
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+    }
+
+    private fun applySearch(query: String) {
+        filteredPenjualanList = if (query.isEmpty()) {
+            currentPenjualanList
+        } else {
+            currentPenjualanList.filter {
+                it.mitraNama.contains(query, ignoreCase = true) ||
+                it.namaProduk.contains(query, ignoreCase = true)
+            }
+        }
+        notaAdapter.submitList(filteredPenjualanList.sortedWith(
+            compareBy<Penjualan> { it.mitraNama }.thenBy { it.namaProduk }
+        ))
     }
 
     private fun showMonthPicker() {
@@ -118,6 +141,8 @@ class LaporanActivity : AppCompatActivity() {
         binding.tvEmptyState.visibility = View.GONE
         binding.tvDetailHeader.visibility = View.GONE
         binding.rvNotaPenjualan.visibility = View.GONE
+        binding.cardSearchLaporan.visibility = View.GONE
+        binding.etSearchLaporan.text.clear()
 
         lifecycleScope.launch {
             try {
@@ -195,9 +220,10 @@ class LaporanActivity : AppCompatActivity() {
         val sorted = currentPenjualanList.sortedWith(
             compareBy<Penjualan> { it.mitraNama }.thenBy { it.namaProduk }
         )
-        notaAdapter.submitList(sorted)
         binding.tvDetailHeader.visibility = View.VISIBLE
         binding.rvNotaPenjualan.visibility = View.VISIBLE
+        binding.cardSearchLaporan.visibility = View.VISIBLE
+        applySearch("") // Load all initially
     }
 
     // ── Edit Dialog ──────────────────────────────────────────────

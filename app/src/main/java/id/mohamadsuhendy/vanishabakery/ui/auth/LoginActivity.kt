@@ -12,6 +12,7 @@ import id.mohamadsuhendy.vanishabakery.ui.main.MainActivity
 import id.mohamadsuhendy.vanishabakery.utils.Result
 import id.mohamadsuhendy.vanishabakery.utils.gone
 import id.mohamadsuhendy.vanishabakery.utils.showSnackbarError
+import id.mohamadsuhendy.vanishabakery.utils.showToast
 import id.mohamadsuhendy.vanishabakery.utils.visible
 import android.view.autofill.AutofillManager
 import android.os.Build
@@ -54,6 +55,13 @@ class LoginActivity : AppCompatActivity() {
 
         setupObservers()
         setupClickListeners()
+        checkLogoutReason()
+    }
+
+    private fun checkLogoutReason() {
+        intent.getStringExtra("LOGOUT_REASON")?.let { reason ->
+            showToast(reason)
+        }
     }
 
     private fun setupClickListeners() {

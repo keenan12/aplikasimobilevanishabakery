@@ -9,6 +9,9 @@ import id.mohamadsuhendy.vanishabakery.data.repository.ProdukRepository
 import id.mohamadsuhendy.vanishabakery.utils.Constants
 import id.mohamadsuhendy.vanishabakery.utils.Result
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.launch
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,8 +21,23 @@ class ProdukViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val produkList: LiveData<List<Produk>> = repository.observeAllProduk().asLiveData()
+    private val _searchQuery = MutableStateFlow("")
     
+    val produkList: LiveData<List<Produk>> = combine(
+        repository.observeAllProduk(),
+        _searchQuery
+    ) { list, query ->
+        if (query.isEmpty()) list
+        else list.filter { 
+            it.nama.contains(query, ignoreCase = true) || 
+            it.deskripsi.contains(query, ignoreCase = true)
+        }
+    }.asLiveData()
+    
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
     val currentUserRole: LiveData<String?> = authRepository.observeCurrentUser()
         .map { it?.role }
         .asLiveData()

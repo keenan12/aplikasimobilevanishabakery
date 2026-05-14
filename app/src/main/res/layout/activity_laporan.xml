@@ -176,6 +176,34 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Search Bar -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSearchLaporan"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="12dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/black"
+                app:cardElevation="0dp"
+                android:visibility="gone">
+                <EditText
+                    android:id="@+id/etSearchLaporan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Cari nama mitra atau produk..."
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="12dp"
+                    app:drawableTint="@color/black" />
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Section Header: Detail Nota -->
             <TextView
                 android:id="@+id/tvDetailHeader"

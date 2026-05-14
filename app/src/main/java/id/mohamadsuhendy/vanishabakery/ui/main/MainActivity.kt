@@ -14,6 +14,7 @@ import id.mohamadsuhendy.vanishabakery.databinding.ActivityMainBinding
 import id.mohamadsuhendy.vanishabakery.ui.auth.LoginActivity
 import id.mohamadsuhendy.vanishabakery.ui.bottomsheet.ActionBottomSheetFragment
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupNavigation()
         observeNetwork()
+        observeSession()
     }
 
     override fun onStart() {
@@ -118,6 +120,26 @@ class MainActivity : AppCompatActivity() {
         app.authRepository.logout()
         startActivity(Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
+    }
+
+    private fun observeSession() {
+        lifecycleScope.launch {
+            val user = app.authRepository.getCurrentUserData() ?: return@launch
+            app.firebaseDataSource.observeUserById(user.uid).collect { updatedUser ->
+                if (updatedUser == null || !updatedUser.isActive) {
+                    logoutWithReason("Akun Anda telah dinonaktifkan atau dihapus oleh Admin.")
+                }
+            }
+        }
+    }
+
+    private fun logoutWithReason(reason: String) {
+        app.authRepository.logout()
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("LOGOUT_REASON", reason)
         })
         finish()
     }
