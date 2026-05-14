@@ -83,7 +83,10 @@ class NotifikasiBottomSheet : BottomSheetDialogFragment() {
                 .collect { notifResult ->
                     val notifs = if (notifResult is id.mohamadsuhendy.vanishabakery.utils.Result.Success) {
                         notifResult.data
-                            .filter { !it.isRead } // Hanya tampilkan yang belum dibaca
+                            .filter { notif ->
+                                val notifDate = notif.createdAt?.toDate()
+                                notifDate != null && notifDate.time > System.currentTimeMillis() - 24 * 60 * 60 * 1000
+                            }
                             .map { notif ->
                                 NotifItem(
                                     notifId = notif.id,

@@ -351,14 +351,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fun drawPinPath(p: android.graphics.Path, radius: Float, tipY: Float) {
             p.reset()
-            p.moveTo(centerX, tipY) // Tip of the pin
-            // Angle of the lines connecting to the circle
-            val angle = 35.0
-            val xOffset = (radius * Math.cos(Math.toRadians(angle))).toFloat()
-            val yOffset = (radius * Math.sin(Math.toRadians(angle))).toFloat()
+            val d = tipY - centerX
+            val betaRad = Math.acos((radius / d).toDouble())
+            val betaDeg = Math.toDegrees(betaRad).toFloat()
+            val xOffset = (radius * Math.sin(betaRad)).toFloat()
+            val yOffset = (radius * Math.cos(betaRad)).toFloat()
             
+            p.moveTo(centerX, tipY) // Tip of the pin
             p.lineTo(centerX - xOffset, centerX + yOffset)
-            p.arcTo(centerX - radius, centerX - radius, centerX + radius, centerX + radius, 90f + angle.toFloat(), 360f - (2 * angle.toFloat()), false)
+            p.arcTo(centerX - radius, centerX - radius, centerX + radius, centerX + radius, 
+                    90f + betaDeg, 360f - (2 * betaDeg), false)
             p.close()
         }
 

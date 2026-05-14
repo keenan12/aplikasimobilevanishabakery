@@ -245,7 +245,7 @@ class RapidEntryActivity : AppCompatActivity() {
         binding.btnSimpanLanjut.text = if (currentMitraIndex == mitraList.size - 1) {
             "SIMPAN & SELESAI"
         } else {
-            "SIMPAN & LANJUT ►"
+            "SIMPAN & LANJUT"
         }
     }
 
