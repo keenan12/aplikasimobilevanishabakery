@@ -73,7 +73,7 @@
                             android:orientation="vertical"
                             android:gravity="center">
                             <TextView
-                                android:id="@+id/tvTotalStok"
+                                android:id="@+id/tvTotalProduk"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -84,7 +84,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/label_total_stok"
+                                android:text="Total Produk"
                                 android:textColor="@color/black"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
@@ -103,7 +103,7 @@
                             android:orientation="vertical"
                             android:gravity="center">
                             <TextView
-                                android:id="@+id/tvLowStockCount"
+                                android:id="@+id/tvProdukAktif"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -113,7 +113,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/label_stok_menipis"
+                                android:text="Produk Aktif"
                                 android:textColor="@color/black"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />

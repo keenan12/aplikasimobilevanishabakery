@@ -32,7 +32,6 @@ class AddProdukBottomSheet(
             binding.tvTitle.text = "Edit Produk"
             binding.etNamaProduk.setText(produk.nama)
             binding.etHargaProduk.setText(produk.harga.toString())
-            binding.etStokProduk.setText(produk.stok.toString())
         }
 
         binding.btnBatal.setOnClickListener { dismiss() }
@@ -40,19 +39,17 @@ class AddProdukBottomSheet(
         binding.btnSimpan.setOnClickListener {
             val nama = binding.etNamaProduk.text.toString().trim()
             val hargaStr = binding.etHargaProduk.text.toString().trim()
-            val stokStr = binding.etStokProduk.text.toString().trim()
 
-            if (nama.isEmpty() || hargaStr.isEmpty() || stokStr.isEmpty()) {
+            if (nama.isEmpty() || hargaStr.isEmpty()) {
                 requireContext().showToast("Harap isi semua data")
                 return@setOnClickListener
             }
 
             try {
                 val cleanHarga = hargaStr.replace(Regex("[^0-9]"), "")
-                val cleanStok = stokStr.replace(Regex("[^0-9]"), "")
                 
-                if (cleanHarga.isEmpty() || cleanStok.isEmpty()) {
-                    requireContext().showToast("Harga dan stok harus berupa angka valid")
+                if (cleanHarga.isEmpty()) {
+                    requireContext().showToast("Harga harus berupa angka valid")
                     return@setOnClickListener
                 }
 
@@ -60,13 +57,13 @@ class AddProdukBottomSheet(
                     id = produk?.id ?: "",
                     nama = nama,
                     harga = cleanHarga.toInt(),
-                    stok = cleanStok.toInt(),
+                    stok = 0, // No longer used in UI
                     fotoUrl = produk?.fotoUrl ?: ""
                 )
                 onSave(newProduk)
                 dismiss()
             } catch (e: Exception) {
-                requireContext().showToast("Harga dan stok harus berupa angka")
+                requireContext().showToast("Harga harus berupa angka")
             }
         }
     }

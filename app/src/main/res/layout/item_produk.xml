@@ -53,6 +53,7 @@
             android:textSize="12sp"
             android:textStyle="bold"
             android:letterSpacing="0.05"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvNamaProduk"
             app:layout_constraintTop_toBottomOf="@id/tvHargaProduk" />
 

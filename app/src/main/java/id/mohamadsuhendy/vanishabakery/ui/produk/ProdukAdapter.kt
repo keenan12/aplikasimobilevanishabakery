@@ -34,7 +34,6 @@ class ProdukAdapter(
         fun bind(produk: Produk) {
             binding.tvNamaProduk.text = produk.nama
             binding.tvHargaProduk.text = "Rp ${String.format("%,d", produk.harga).replace(',', '.')}"
-            binding.tvStokProduk.text = "Stok: ${produk.stok} pcs"
             
             if (isAdmin) {
                 binding.layoutAdminActions.visible()

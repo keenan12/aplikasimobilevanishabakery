@@ -62,9 +62,8 @@ class ProdukFragment : Fragment() {
         viewModel.produkList.observe(viewLifecycleOwner) { products ->
             binding.progressBar.gone()
             adapter.submitList(products)
-            
-            binding.tvTotalStok.text = products.sumOf { it.stok }.toString()
-            binding.tvLowStockCount.text = products.count { it.stok < 10 }.toString()
+            binding.tvTotalProduk.text = products.size.toString()
+            binding.tvProdukAktif.text = products.count { it.isActive }.toString()
         }
 
         viewModel.actionState.observe(viewLifecycleOwner) { result ->
