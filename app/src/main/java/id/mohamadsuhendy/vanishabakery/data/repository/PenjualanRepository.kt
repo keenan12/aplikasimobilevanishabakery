@@ -70,46 +70,65 @@ class PenjualanRepository(
             var savedCount = 0
 
             items.forEach { item ->
-                // Skip produk yang kirim=0 dan retur=0
-                if (item.kirim <= 0 && item.retur <= 0) return@forEach
-
                 val terjual = maxOf(0, item.kirim - item.retur)
                 val totalHarga = terjual * item.hargaSatuan
-                val docId = UUID.randomUUID().toString()
 
-                val penjualan = Penjualan(
-                    mitraId = mitraId, mitraNama = mitraNama,
-                    ruteId = ruteId, ruteNama = ruteNama,
-                    namaProduk = item.namaProduk,
-                    jumlahKirim = item.kirim,
-                    jumlahRetur = item.retur,
-                    jumlahTerjual = terjual,
-                    hargaSatuan = item.hargaSatuan,
-                    totalHarga = totalHarga,
-                    tanggalNota = tanggalTs,
-                    inputOleh = adminId, inputOlehNama = adminNama,
-                    isSynced = true, createdAt = now
-                )
-
-                val entity = PenjualanEntity(
-                    id = docId, mitraId = mitraId, mitraNama = mitraNama,
-                    ruteId = ruteId, ruteNama = ruteNama,
-                    namaProduk = item.namaProduk,
-                    jumlahKirim = item.kirim, jumlahRetur = item.retur,
-                    jumlahTerjual = terjual,
-                    hargaSatuan = item.hargaSatuan, totalHarga = totalHarga,
-                    tanggalNota = tanggalNota,
-                    inputOleh = adminId, inputOlehNama = adminNama,
-                    isSynced = network.isOnline
-                )
-
-                if (network.isOnline) {
-                    val firebaseId = remote.addPenjualan(penjualan)
-                    dao.insertPenjualan(entity.copy(id = firebaseId, isSynced = true))
+                if (item.existingId != null) {
+                    // Update atau Delete data yang sudah ada
+                    if (item.kirim <= 0 && item.retur <= 0) {
+                        // Jika diubah jadi 0 semua, maka hapus dari database
+                        if (network.isOnline) {
+                            remote.deletePenjualan(item.existingId)
+                        }
+                        dao.deletePenjualanById(item.existingId)
+                        // tidak menambah savedCount karena dihapus
+                    } else {
+                        // Update field
+                        if (network.isOnline) {
+                            remote.updatePenjualan(item.existingId, item.kirim, item.retur, terjual, totalHarga)
+                        }
+                        dao.updatePenjualanFields(item.existingId, item.kirim, item.retur, terjual, totalHarga)
+                        savedCount++
+                    }
                 } else {
-                    dao.insertPenjualan(entity)
+                    // Buat data baru (Insert)
+                    if (item.kirim <= 0 && item.retur <= 0) return@forEach
+
+                    val docId = UUID.randomUUID().toString()
+                    val penjualan = Penjualan(
+                        mitraId = mitraId, mitraNama = mitraNama,
+                        ruteId = ruteId, ruteNama = ruteNama,
+                        namaProduk = item.namaProduk,
+                        jumlahKirim = item.kirim,
+                        jumlahRetur = item.retur,
+                        jumlahTerjual = terjual,
+                        hargaSatuan = item.hargaSatuan,
+                        totalHarga = totalHarga,
+                        tanggalNota = tanggalTs,
+                        inputOleh = adminId, inputOlehNama = adminNama,
+                        isSynced = true, createdAt = now
+                    )
+
+                    val entity = PenjualanEntity(
+                        id = docId, mitraId = mitraId, mitraNama = mitraNama,
+                        ruteId = ruteId, ruteNama = ruteNama,
+                        namaProduk = item.namaProduk,
+                        jumlahKirim = item.kirim, jumlahRetur = item.retur,
+                        jumlahTerjual = terjual,
+                        hargaSatuan = item.hargaSatuan, totalHarga = totalHarga,
+                        tanggalNota = tanggalNota,
+                        inputOleh = adminId, inputOlehNama = adminNama,
+                        isSynced = network.isOnline
+                    )
+
+                    if (network.isOnline) {
+                        val firebaseId = remote.addPenjualan(penjualan)
+                        dao.insertPenjualan(entity.copy(id = firebaseId, isSynced = true))
+                    } else {
+                        dao.insertPenjualan(entity)
+                    }
+                    savedCount++
                 }
-                savedCount++
             }
 
             // Log aktivitas
@@ -193,5 +212,6 @@ data class PenjualanItem(
     val namaProduk: String,
     val hargaSatuan: Int,
     val kirim: Int,
-    val retur: Int
+    val retur: Int,
+    val existingId: String? = null
 )

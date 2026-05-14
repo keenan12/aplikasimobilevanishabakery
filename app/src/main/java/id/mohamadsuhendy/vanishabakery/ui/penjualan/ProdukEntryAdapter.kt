@@ -20,7 +20,8 @@ class ProdukEntryAdapter(
     data class ProdukEntry(
         val produk: Produk,
         var kirim: Int = 0,
-        var retur: Int = 0
+        var retur: Int = 0,
+        val existingId: String? = null
     ) {
         val terjual: Int get() = maxOf(0, kirim - retur)
         val totalHarga: Int get() = terjual * produk.harga
@@ -62,8 +63,8 @@ class ProdukEntryAdapter(
      */
     fun getCurrentSnapshot(): List<ProdukEntry> = items.map { it.copy() }
 
-    /** Get all entries with kirim > 0 or retur > 0 */
-    fun getFilledEntries(): List<ProdukEntry> = items.filter { it.kirim > 0 || it.retur > 0 }
+    /** Get all entries with kirim > 0 or retur > 0, OR if they have an existingId (to allow deletion) */
+    fun getFilledEntries(): List<ProdukEntry> = items.filter { it.kirim > 0 || it.retur > 0 || it.existingId != null }
 
     /** Get total terjual across all products */
     fun getTotalTerjual(): Int = items.sumOf { it.terjual }

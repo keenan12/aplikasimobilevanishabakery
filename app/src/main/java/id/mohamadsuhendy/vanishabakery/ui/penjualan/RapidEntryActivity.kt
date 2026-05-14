@@ -139,6 +139,19 @@ class RapidEntryActivity : AppCompatActivity() {
     private fun loadMitraForRute() {
         val rute = selectedRute ?: return
 
+        // Hitung start dan end untuk selectedDate
+        val startCal = selectedDate.clone() as Calendar
+        startCal.set(Calendar.HOUR_OF_DAY, 0)
+        startCal.set(Calendar.MINUTE, 0)
+        startCal.set(Calendar.SECOND, 0)
+        startCal.set(Calendar.MILLISECOND, 0)
+
+        val endCal = startCal.clone() as Calendar
+        endCal.add(Calendar.DAY_OF_MONTH, 1)
+
+        val startTs = com.google.firebase.Timestamp(startCal.time)
+        val endTs = com.google.firebase.Timestamp(endCal.time)
+
         lifecycleScope.launch {
             mitraList = app.mitraRepository.observeAllMitra().first()
                 .filter { it.ruteId == rute.id && it.isApproved() }
@@ -150,9 +163,34 @@ class RapidEntryActivity : AppCompatActivity() {
                 return@launch
             }
 
+            // Load existing Penjualan data for this rute and date
+            val existingSales = app.firebaseDataSource.observePenjualanByPeriode(startTs, endTs).first()
+                .filter { it.ruteId == rute.id }
+
             currentMitraIndex = 0
             savedMitraIndices.clear()
             mitraEntryState.clear()
+
+            // Pre-fill mitraEntryState with existingSales data
+            mitraList.forEachIndexed { index, mitra ->
+                val salesForMitra = existingSales.filter { it.mitraId == mitra.id }
+                if (salesForMitra.isNotEmpty()) {
+                    savedMitraIndices.add(index) // Tandai sudah disimpan sebelumnya
+                    
+                    // Buat snapshot list dari produkList
+                    val snapshot = produkList.map { produk ->
+                        val saleItem = salesForMitra.find { it.namaProduk == produk.nama }
+                        ProdukEntryAdapter.ProdukEntry(
+                            produk = produk,
+                            kirim = saleItem?.jumlahKirim ?: 0,
+                            retur = saleItem?.jumlahRetur ?: 0,
+                            existingId = saleItem?.id
+                        )
+                    }
+                    mitraEntryState[index] = snapshot
+                }
+            }
+
             showEntryUI()
             showCurrentMitra()
         }
@@ -245,7 +283,8 @@ class RapidEntryActivity : AppCompatActivity() {
                 namaProduk = entry.produk.nama,
                 hargaSatuan = entry.produk.harga,
                 kirim = entry.kirim,
-                retur = entry.retur
+                retur = entry.retur,
+                existingId = entry.existingId
             )
         }
 
