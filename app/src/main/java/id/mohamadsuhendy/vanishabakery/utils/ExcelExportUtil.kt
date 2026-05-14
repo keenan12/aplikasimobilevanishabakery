@@ -111,7 +111,8 @@ object ExcelExportUtil {
                 val mitraNama = sales.firstOrNull()?.mitraNama ?: ""
                 val ruteNama = sales.firstOrNull()?.ruteNama ?: ""
 
-                sales.forEachIndexed { idx, p ->
+                val sortedSales = sales.sortedByDescending { it.hargaSatuan }
+                sortedSales.forEachIndexed { idx, p ->
                     val rowClass = if (idx == 0) "mitra-first" else ""
                     append("<tr class='$rowClass'>")
 
@@ -219,8 +220,15 @@ object ExcelExportUtil {
         }
 
         // Save as .xls (Excel reads HTML tables natively)
-        val fileName = "Laporan_VanishaBakery_${periodLabel.replace(" ", "_")}.xls"
-        val dir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "VanishaBakery")
+        val timestamp = System.currentTimeMillis()
+        val fileName = "Laporan_VanishaBakery_${periodLabel.replace(" ", "_")}_$timestamp.xls"
+        
+        val dir = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "VanishaBakery")
+        } else {
+            File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "VanishaBakery")
+        }
+        
         if (!dir.exists()) dir.mkdirs()
         val file = File(dir, fileName)
 

@@ -389,7 +389,7 @@ class LaporanActivity : AppCompatActivity() {
                 lastExportedFile = result.file
                 binding.progressBar.visibility = View.GONE
 
-                showToast("✅ Excel tersimpan: ${result.file.name}")
+                showToast("✅ Excel tersimpan di: ${result.file.absolutePath}")
 
                 if (shareAfter) {
                     ExcelExportUtil.shareFile(this@LaporanActivity, result.file)

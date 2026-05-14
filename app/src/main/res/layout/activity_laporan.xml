@@ -266,8 +266,9 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:text="📥 Download Excel"
+            android:text="DOWNLOAD"
             android:textColor="@color/black"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:background="@drawable/bg_neo_button_green"
             android:layout_marginEnd="8dp" />
@@ -278,8 +279,9 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:text="📤 Share"
+            android:text="SHARE"
             android:textColor="@color/black"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:background="@drawable/bg_neo_button_teal" />
     </LinearLayout>

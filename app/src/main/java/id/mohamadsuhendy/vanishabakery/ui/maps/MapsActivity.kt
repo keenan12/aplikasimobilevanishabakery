@@ -362,20 +362,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             p.close()
         }
 
-        // 1. Shadow
-        paint.color = Color.BLACK
-        drawPinPath(path, circleRadius, bottomY + 4)
-        canvas.drawPath(path, paint)
-
-        // 2. White Border
-        paint.color = Color.WHITE
+        // 1. Fill and Shadow
+        paint.style = android.graphics.Paint.Style.FILL
+        paint.color = backgroundColor
+        paint.setShadowLayer(4f, 0f, 2f, Color.argb(100, 0, 0, 0))
         drawPinPath(path, circleRadius, bottomY)
         canvas.drawPath(path, paint)
 
-        // 3. Colored Center
-        paint.color = backgroundColor
-        drawPinPath(path, circleRadius - 8, bottomY - 12)
+        // Clear shadow so it doesn't affect the border and icon
+        paint.clearShadowLayer()
+
+        // 2. White Border
+        paint.style = android.graphics.Paint.Style.STROKE
+        paint.color = Color.WHITE
+        paint.strokeWidth = 6f
+        paint.strokeJoin = android.graphics.Paint.Join.ROUND
         canvas.drawPath(path, paint)
+
+        // Reset to FILL for icon
+        paint.style = android.graphics.Paint.Style.FILL
 
         // 4. Icon
         val drawable = ContextCompat.getDrawable(this, iconRes)?.mutate()

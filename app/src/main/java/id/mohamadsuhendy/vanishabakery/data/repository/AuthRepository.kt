@@ -43,11 +43,10 @@ class AuthRepository(
             val msg = when {
                 rawMessage.contains("INVALID_LOGIN_CREDENTIALS") ||
                 rawMessage.contains("INVALID_PASSWORD") ||
-                rawMessage.contains("password is invalid") ->
-                    "Password salah untuk $email. Coba ketik manual."
+                rawMessage.contains("password is invalid") ||
                 rawMessage.contains("no user record") ||
                 rawMessage.contains("user-not-found") ->
-                    "Email $email tidak terdaftar."
+                    "sandi atau username salah"
                 rawMessage.contains("badly formatted") ||
                 rawMessage.contains("invalid-email") ->
                     "Format email $email tidak valid."
