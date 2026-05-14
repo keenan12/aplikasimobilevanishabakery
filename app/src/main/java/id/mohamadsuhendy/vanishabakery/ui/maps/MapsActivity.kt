@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -425,6 +426,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.tvMitraStatus.text = "Status: $status\nSales: ${mitra.staffNama}\nRute: ${mitra.ruteNama}\n${mitra.alamat}$heatmapInfo"
         selectedMitraLatLng = LatLng(mitra.latitude, mitra.longitude)
+        
+        // Load Photo
+        if (mitra.fotoUrl.isNotEmpty()) {
+            Glide.with(this)
+                .load(mitra.fotoUrl)
+                .placeholder(R.drawable.ic_store)
+                .error(R.drawable.ic_store)
+                .into(binding.ivMitraPhoto)
+        } else {
+            binding.ivMitraPhoto.setImageResource(R.drawable.ic_store)
+        }
         
         // Update distance if location is available
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
