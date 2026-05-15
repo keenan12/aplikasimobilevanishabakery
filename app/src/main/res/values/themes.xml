@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- BASE THEME -->
-    <style name="Base.Theme.VanishaBakery" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.VanishaBakery" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
         <item name="colorSecondary">@color/secondary</item>
@@ -106,7 +106,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="Theme.VanishaBakery.Dialog.Neo" parent="Theme.Material3.DayNight.Dialog">
+    <style name="Theme.VanishaBakery.Dialog.Neo" parent="Theme.Material3.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFrame">@null</item>
