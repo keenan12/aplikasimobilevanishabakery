@@ -91,7 +91,7 @@ class ProfileFragment : Fragment() {
         
         binding.btnEditAvatar.setOnClickListener { showPhotoOptions() }
         
-        setupDarkModeSwitch()
+
         
         binding.cardLogout.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -108,17 +108,7 @@ class ProfileFragment : Fragment() {
         observeViewModel()
     }
 
-    private fun setupDarkModeSwitch() {
-        val prefs = requireContext().getSharedPreferences("vanisha_prefs", Context.MODE_PRIVATE)
-        val currentMode = prefs.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        binding.switchDarkMode.isChecked = currentMode == AppCompatDelegate.MODE_NIGHT_YES
 
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            val mode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            prefs.edit().putInt("night_mode", mode).apply()
-            AppCompatDelegate.setDefaultNightMode(mode)
-        }
-    }
 
     private fun setupUserList() {
         if (userAdapter == null) {
