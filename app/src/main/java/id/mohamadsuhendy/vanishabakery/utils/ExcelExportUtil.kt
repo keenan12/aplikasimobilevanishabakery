@@ -89,7 +89,7 @@ object ExcelExportUtil {
             append("<table>")
             append("<tr><td colspan='8' class='title'>LAPORAN PENJUALAN VANISHA BAKERY</td></tr>")
             append("<tr><td colspan='8' class='subtitle'>Periode: $periodLabel</td></tr>")
-            append("<tr><td colspan='8' class='subtitle'>Dicetak: ${sdf.format(Date())}</td></tr>")
+            append("<tr><td colspan='8' class='subtitle'>Waktu Unduh Laporan: ${sdf.format(Date())}</td></tr>")
             append("<tr><td colspan='8'>&nbsp;</td></tr>")
 
             // Headers

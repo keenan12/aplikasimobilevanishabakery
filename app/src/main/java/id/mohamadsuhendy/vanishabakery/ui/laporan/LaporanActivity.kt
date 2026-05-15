@@ -389,10 +389,17 @@ class LaporanActivity : AppCompatActivity() {
                 lastExportedFile = result.file
                 binding.progressBar.visibility = View.GONE
 
-                showToast("✅ Excel tersimpan di: ${result.file.absolutePath}")
-
                 if (shareAfter) {
                     ExcelExportUtil.shareFile(this@LaporanActivity, result.file)
+                } else {
+                    androidx.appcompat.app.AlertDialog.Builder(this@LaporanActivity)
+                        .setTitle("✅ Laporan Berhasil Diunduh")
+                        .setMessage("File Excel telah tersimpan di folder:\nDownload / VanishaBakery\n\nCatatan Penting:\nJika file tidak bisa dibuka menggunakan aplikasi Microsoft Excel di HP, hal ini wajar karena keamanan aplikasi Excel versi HP. Silakan gunakan WPS Office, Google Sheets, atau klik 'Bagikan' untuk mengirimnya ke WhatsApp/Laptop Anda.")
+                        .setPositiveButton("Tutup", null)
+                        .setNeutralButton("Bagikan") { _, _ ->
+                            ExcelExportUtil.shareFile(this@LaporanActivity, result.file)
+                        }
+                        .show()
                 }
             } catch (e: Exception) {
                 binding.progressBar.visibility = View.GONE
