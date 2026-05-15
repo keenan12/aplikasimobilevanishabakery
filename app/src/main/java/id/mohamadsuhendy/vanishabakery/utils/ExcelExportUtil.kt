@@ -41,7 +41,8 @@ object ExcelExportUtil {
     ): ExportResult {
         val grouped = penjualanList.groupBy { it.mitraId }
         val formatter = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
-        val sdf = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale("id", "ID"))
+        val sdfFull = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale("id", "ID"))
+        val sdfDate = SimpleDateFormat("dd/MM/yyyy", Locale("id", "ID"))
 
         var totalKirim = 0
         var totalRetur = 0
@@ -87,16 +88,17 @@ object ExcelExportUtil {
 
             // Title
             append("<table>")
-            append("<tr><td colspan='8' class='title'>LAPORAN PENJUALAN VANISHA BAKERY</td></tr>")
-            append("<tr><td colspan='8' class='subtitle'>Periode: $periodLabel</td></tr>")
-            append("<tr><td colspan='8' class='subtitle'>Waktu Unduh Laporan: ${sdf.format(Date())}</td></tr>")
-            append("<tr><td colspan='8'>&nbsp;</td></tr>")
+            append("<tr><td colspan='9' class='title'>LAPORAN PENJUALAN VANISHA BAKERY</td></tr>")
+            append("<tr><td colspan='9' class='subtitle'>Periode: $periodLabel</td></tr>")
+            append("<tr><td colspan='9' class='subtitle'>Waktu Unduh Laporan: ${sdfFull.format(Date())}</td></tr>")
+            append("<tr><td colspan='9'>&nbsp;</td></tr>")
 
             // Headers
             append("<tr>")
             append("<th>No</th>")
             append("<th>Nama Mitra</th>")
             append("<th>Rute</th>")
+            append("<th>Tanggal</th>")
             append("<th>Produk</th>")
             append("<th>Kirim</th>")
             append("<th>Retur</th>")
@@ -111,7 +113,8 @@ object ExcelExportUtil {
                 val mitraNama = sales.firstOrNull()?.mitraNama ?: ""
                 val ruteNama = sales.firstOrNull()?.ruteNama ?: ""
 
-                val sortedSales = sales.sortedByDescending { it.hargaSatuan }
+                // Sort berdasarkan tanggal (terlama ke terbaru) kemudian harga
+                val sortedSales = sales.sortedWith(compareBy({ it.tanggalNota }, { -it.hargaSatuan }))
                 sortedSales.forEachIndexed { idx, p ->
                     val rowClass = if (idx == 0) "mitra-first" else ""
                     append("<tr class='$rowClass'>")
@@ -123,6 +126,9 @@ object ExcelExportUtil {
                     } else {
                         append("<td></td><td></td><td></td>")
                     }
+
+                    val tglStr = p.tanggalNota?.let { sdfDate.format(it.toDate()) } ?: "-"
+                    append("<td>$tglStr</td>")
 
                     append("<td class='left'>${p.namaProduk}</td>")
                     append("<td>${p.jumlahKirim}</td>")
@@ -140,7 +146,7 @@ object ExcelExportUtil {
 
             // Total row
             append("<tr class='total-row'>")
-            append("<td colspan='4'>TOTAL</td>")
+            append("<td colspan='5'>TOTAL</td>")
             append("<td>$totalKirim</td>")
             append("<td>$totalRetur</td>")
             append("<td>$totalTerjual</td>")
