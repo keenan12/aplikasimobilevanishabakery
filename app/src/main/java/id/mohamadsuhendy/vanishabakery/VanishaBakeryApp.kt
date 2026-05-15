@@ -48,5 +48,6 @@ class VanishaBakeryApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

@@ -286,8 +286,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             
             if (user?.isAdmin() == true) {
                 binding.layoutAdminActions.visibility = View.VISIBLE
+                binding.cardTrafficFrame.visibility = View.VISIBLE
+                binding.tvLabelTopProduk.visibility = View.VISIBLE
+                binding.cardPieChart.visibility = View.VISIBLE
             } else {
                 binding.layoutAdminActions.visibility = View.GONE
+                binding.cardTrafficFrame.visibility = View.GONE
+                binding.tvLabelTopProduk.visibility = View.GONE
+                binding.cardPieChart.visibility = View.GONE
             }
         }
 
